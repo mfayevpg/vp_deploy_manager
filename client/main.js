@@ -41,16 +41,15 @@ Template.timezoneList.helpers({
 });
 
 Template.timezoneDisplay.rendered = function () {
-    var utcTime = (new Date().getTime() / 1000) + (new Date().getTimezoneOffset() * 60);
-
     var location = this.data.location;
     var countryCode = this.data.countryCode;
-//    setLocalizedTime(location, utcTime, countryCode);
-//    setInterval(function(){
-        setLocalizedTime(location, utcTime, countryCode);
-//    } , 10000);
+    setLocalizedTime(location, countryCode);
+    setInterval(function(){
+        setLocalizedTime(location, countryCode);
+    } , 10000);
 
-    function setLocalizedTime(location, utcTime, countryCode) {
+    function setLocalizedTime(location, countryCode) {
+        var utcTime = (new Date().getTime() / 1000) + (new Date().getTimezoneOffset() * 60);
         var $currentLi = $('#timezone_' + countryCode);
         console.log('Calling setLocalizedTime', location, utcTime, $currentLi.text());
         var googleRequestTemplate = 'https://maps.googleapis.com/maps/api/timezone/json?location=#LOCATION#&timestamp=' + utcTime + '&sensor=false';
