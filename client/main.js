@@ -12,6 +12,8 @@ Meteor.pages({
     }
 });
 
+MepList = new Meteor.Collection('meps');
+
 function isLoggedIn(pageInvocation) {
     if (!Meteor.userId() || Meteor.userId() == null) {
         console.log('Meteor.userId()');
@@ -46,8 +48,6 @@ function updateTime(utcTime, result, $currentLi) {
     $currentLi.text(localizedDate.getHours() + ':' + localizedDate.getMinutes());
 }
 Template.timezoneDisplay.rendered = function () {
-
-
     var location = this.data.location;
     var countryCode = this.data.countryCode;
     setLocalizedTime(location, countryCode);

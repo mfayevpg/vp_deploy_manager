@@ -8,14 +8,14 @@
 
 <template name="notLoggedLayout">
 
-    {{{yield}}}
+  {{{yield}}}
 
 </template>
 
 <template name="loggingForm">
     <form class="form-signin">
         <h2 class="form-signin-heading">Please sign in</h2>
-        {{loginButtons}}
+      {{loginButtons}}
     </form>
 </template>
 
@@ -28,146 +28,457 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="brand" href="#">VP Mep Manager</a>
+                <a class="brand" href="#">VP Deploy Manager</a>
 
                 <div class="nav-collapse collapse">
                     <p class="navbar-text pull-right">
-                        {{loginButtons}}
+                      {{loginButtons}}
                     </p>
                     <ul class="nav">
-                        {{> timezoneList}}
+                      {{> timezoneList}}
                     </ul>
                 </div>
                 <!--/.nav-collapse -->
             </div>
         </div>
     </div>
-    {{{yield}}}
+  {{{yield}}}
 </template>
 
 <template name="mainDisplay">
     <div class="container-fluid">
         <div class="row-fluid">
-            <div class="span3">
-                <div class="well sidebar-nav">
-                    <ul class="nav nav-list">
-                        <li class="nav-header">Sidebar</li>
-                        <li class="active"><a href="#">Link</a></li>
-                        <li><a href="#">Link</a></li>
-                        <li><a href="#">Link</a></li>
-                        <li><a href="#">Link</a></li>
-                        <li class="nav-header">Sidebar</li>
-                        <li><a href="#">Link</a></li>
-                        <li><a href="#">Link</a></li>
-                        <li><a href="#">Link</a></li>
-                        <li><a href="#">Link</a></li>
-                        <li><a href="#">Link</a></li>
-                        <li><a href="#">Link</a></li>
-                        <li class="nav-header">Sidebar</li>
-                        <li><a href="#">Link</a></li>
-                        <li><a href="#">Link</a></li>
-                        <li><a href="#">Link</a></li>
-                    </ul>
-                </div>
-                <!--/.well -->
+            <div class="span2">
+              {{> deploymentsList}}
             </div>
             <!--/span-->
-            <div class="span9">
-                <div class="hero-unit">
-                    <h1>Hello, world!</h1>
-
-                    <p>This is a template for a simple marketing or informational website. It includes a large callout
-                        called the hero unit and three supporting pieces of content. Use it as a starting point to
-                        create something more unique.</p>
-
-                    <p><a href="#" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
+            <div class="span10">
+                <div class="row-fluid">
+                  {{> mepStatus}}
                 </div>
                 <div class="row-fluid">
-                    <div class="span4">
-                        <h2>Heading</h2>
-
-                        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo,
-                            tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem
-                            malesuada magna mollis euismod. Donec sed odio dui. </p>
-
-                        <p><a class="btn" href="#">View details &raquo;</a></p>
-                    </div>
-                    <!--/span-->
-                    <div class="span4">
-                        <h2>Heading</h2>
-
-                        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo,
-                            tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem
-                            malesuada magna mollis euismod. Donec sed odio dui. </p>
-
-                        <p><a class="btn" href="#">View details &raquo;</a></p>
-                    </div>
-                    <!--/span-->
-                    <div class="span4">
-                        <h2>Heading</h2>
-
-                        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo,
-                            tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem
-                            malesuada magna mollis euismod. Donec sed odio dui. </p>
-
-                        <p><a class="btn" href="#">View details &raquo;</a></p>
-                    </div>
-                    <!--/span-->
+                  {{> playerList}}
+                  {{> branchList}}
                 </div>
                 <!--/row-->
                 <div class="row-fluid">
-                    <div class="span4">
-                        <h2>Heading</h2>
-
-                        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo,
-                            tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem
-                            malesuada magna mollis euismod. Donec sed odio dui. </p>
-
-                        <p><a class="btn" href="#">View details &raquo;</a></p>
-                    </div>
-                    <!--/span-->
-                    <div class="span4">
-                        <h2>Heading</h2>
-
-                        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo,
-                            tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem
-                            malesuada magna mollis euismod. Donec sed odio dui. </p>
-
-                        <p><a class="btn" href="#">View details &raquo;</a></p>
-                    </div>
-                    <!--/span-->
-                    <div class="span4">
-                        <h2>Heading</h2>
-
-                        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo,
-                            tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem
-                            malesuada magna mollis euismod. Donec sed odio dui. </p>
-
-                        <p><a class="btn" href="#">View details &raquo;</a></p>
-                    </div>
-                    <!--/span-->
+                  {{> taskList}}
                 </div>
-                <!--/row-->
+                <div class="row-fluid">
+                    <a href="" class="btn btn-success pull-left">Dupliquer</a>
+                    <a href="" class="btn btn-danger pull-right">Terminer</a>
+                </div>
             </div>
             <!--/span-->
         </div>
         <!--/row-->
-
-        <hr>
-
-        <footer>
-            <p>&copy; voyageprive.com 2013</p>
-        </footer>
-
+      {{> footer}}
     </div>
     <!--/.fluid-container-->
 </template>
 
 <template name="timezoneDisplay">
-    <li><a><img style="height: 24px; width: 24px" src="{{countryCode}}.png"><span id="timezone_{{countryCode}}">{{initialDisplayTime}}</span></a></li>
+    <li><a><img style="height: 24px; width: 24px" src="{{countryCode}}.png"><span
+            id="timezone_{{countryCode}}">{{initialDisplayTime}}</span></a></li>
 </template>
 <template name="timezoneList">
-    {{#each deployingTimezone}}
-        {{> timezoneDisplay}}
-    {{/each}}
+  {{#each deployingTimezone}}
+    {{> timezoneDisplay}}
+  {{/each}}
+</template>
+
+<template name="deploymentsList">
+
+    <div class="well sidebar-nav">
+        <ul class="nav nav-list">
+            <li class="nav-header">Deployments</li>
+            <li class="active"><a href="#">20/02/2013 - <span class="badge">&nbsp;</span></a></li>
+            <li><a href="#">01/03/2013 - <span class="badge badge-warning">&nbsp;</span></a></li>
+            <li><a href="#">16/03/2013 - <span class="badge badge-important">&nbsp;</span></a></li>
+            <li><a href="#">31/04/2013 - <span class="badge badge-important">&nbsp;</span></a></li>
+        </ul>
+    </div>
+    <a href="#" class="btn"><i class="icon-plus"></i>New Deployment</a>
+    <!--/.well -->
+</template>
+
+<template name="mepStatus">
+
+    <div class="span4 offset4">
+        <p class="text-center">MEP du 20/02/2013 - <span class="label label-important">Terminée</span>
+            <span class="label">En cours d'Edition</span>
+            <span class="label label-warning">En cours</span>
+
+        <div class="btn-group">
+            <button class="btn btn-small">Passer en mode</button>
+            <button class="btn btn-small dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu btn-small">
+                <li><a>En cours d'Edition</a></li>
+                <li><a>En cours</a></li>
+            </ul>
+        </div>
+        </p>
+    </div>
+</template>
+
+<template name="playerList">
+    <div class="span6">
+        <h4>Participants</h4>
+
+        <ul class="inline">
+            <li>
+                <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}" target="_blank">
+                    <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+                </a>
+            </li>
+            <li>
+                <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}" target="_blank">
+                    <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+                </a>
+            </li>
+            <li>
+                <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}" target="_blank">
+                    <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+                </a>
+            </li>
+            <li>
+                <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}" target="_blank">
+                    <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+                </a>
+            </li>
+            <li>
+                <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}" target="_blank">
+                    <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+                </a>
+            </li>
+            <li>
+                <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}" target="_blank">
+                    <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+                </a>
+            </li>
+        </ul>
+
+        <p><a class="btn btn-success btn-mini" href="#"><i class="icon-pencil icon-white"></i>&nbsp;Modifier</a></p>
+    </div>
+    <!--/span-->
+</template>
+
+<template name="branchList">
+    <div class="span6">
+        <h4>Branche Déployées</h4>
+        <table class="table">
+            <tr>
+                <td>Bong</td>
+                <td>master_1.33</td>
+            </tr>
+            <tr>
+                <td>Oxybong</td>
+                <td>master_1.33</td>
+            </tr>
+            <tr>
+                <td>Front</td>
+                <td>master_1.33</td>
+            </tr>
+            <tr>
+                <td>MemberMid</td>
+                <td>master_1.33</td>
+            </tr>
+            <tr>
+                <td>MobMid</td>
+                <td>master_1.33</td>
+            </tr>
+        </table>
+
+        <p><a class="btn btn-success btn-mini" href="#"><i class="icon-pencil icon-white"></i>&nbsp;Modifier</a></p>
+    </div>
+    <!--/span-->
+</template>
+
+<template name="footer">
+    <hr>
+    <footer>
+        <p>&copy; voyageprive.com 2013</p>
+    </footer>
+</template>
+
+<template name="taskList">
+<table class="table">
+    <thead>
+    <tr>
+        <th><a href="#"><i class="icon-arrow-down"></i></a></th>
+        <th>FR - ES &nbsp; <a class="btn btn-success btn-mini" href="#"><i class="icon-pencil icon-white"></i>&nbsp;Modifier</a></th>
+        <th>Commencé à / Par</th>
+        <th>Terminé à / Par</th>
+        <th>&nbsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            <a href="#"><i class="icon-arrow-down"></i></a>
+        </td>
+        <td>
+            <pre>crontab -e (*/5 * * * * sh /web/git/scripts/replic_xapian.sh bu)</pre>
+            <a href="" class="btn btn-info btn-mini">Activer</a>
+            <a href="" class="btn btn-warning btn-mini disabled">Annuler</a>
+            <a href="" class="btn btn-danger btn-mini disabled">Terminer</a>
+        </td>
+        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
+                       target="_blank">
+            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+        </a>
+        </td>
+        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
+                       target="_blank">
+            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+        </a></td>
+        <td>
+            <a href="#" class="btn btn-mini"><i class="icon-remove"></i></a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a href="#"><i class="icon-arrow-down"></i></a>
+            <a href="#"><i class="icon-arrow-up"></i></a>
+        </td>
+        <td>
+            <pre>crontab -e (*/5 * * * * sh /web/git/scripts/replic_xapian.sh bu)</pre>
+            <a href="" class="btn btn-info btn-mini">Activer</a>
+            <a href="" class="btn btn-warning btn-mini disabled">Annuler</a>
+            <a href="" class="btn btn-danger btn-mini disabled">Terminer</a>
+        </td>
+        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
+                       target="_blank">
+            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+        </a>
+        </td>
+        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
+                       target="_blank">
+            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+        </a></td>
+        <td>
+            <a href="#" class="btn btn-mini"><i class="icon-remove"></i></a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a href="#"><i class="icon-arrow-down"></i></a>
+            <a href="#"><i class="icon-arrow-up"></i></a>
+        </td>
+        <td>
+            <pre>crontab -e (*/5 * * * * sh /web/git/scripts/replic_xapian.sh bu)</pre>
+            <a href="" class="btn btn-info btn-mini">Activer</a>
+            <a href="" class="btn btn-warning btn-mini disabled">Annuler</a>
+            <a href="" class="btn btn-danger btn-mini disabled">Terminer</a>
+        </td>
+        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
+                       target="_blank">
+            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+        </a>
+        </td>
+        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
+                       target="_blank">
+            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+        </a></td>
+        <td>
+            <a href="#" class="btn btn-mini"><i class="icon-remove"></i></a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a href="#"><i class="icon-arrow-down"></i></a>
+            <a href="#"><i class="icon-arrow-up"></i></a>
+        </td>
+        <td>
+            <pre>crontab -e (*/5 * * * * sh /web/git/scripts/replic_xapian.sh bu)</pre>
+            <a href="" class="btn btn-info btn-mini">Activer</a>
+            <a href="" class="btn btn-warning btn-mini disabled">Annuler</a>
+            <a href="" class="btn btn-danger btn-mini disabled">Terminer</a>
+        </td>
+        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
+                       target="_blank">
+            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+        </a>
+        </td>
+        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
+                       target="_blank">
+            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+        </a></td>
+        <td>
+            <a href="#" class="btn btn-mini"><i class="icon-remove"></i></a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a href="#"><i class="icon-arrow-up"></i></a>
+        </td>
+        <td>
+            <pre>crontab -e (*/5 * * * * sh /web/git/scripts/replic_xapian.sh bu)</pre>
+            <a href="" class="btn btn-info btn-mini disabled">Activer</a>
+            <a href="" class="btn btn-warning btn-mini">Annuler</a>
+            <a href="" class="btn btn-danger btn-mini">Terminer</a>
+        </td>
+        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
+                       target="_blank">
+            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+        </a>
+        </td>
+        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
+                       target="_blank">
+            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+        </a></td>
+        <td>
+            <a href="#" class="btn btn-mini"><i class="icon-remove"></i></a>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="5">
+            <p class="text-center">
+                <a href="" class="btn btn-small"><i class="icon-plus"></i>Ajouter une tâche</a>
+            </p>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table class="table">
+    <thead>
+    <tr>
+        <th><a href="#"><i class="icon-arrow-up"></i></a></th>
+        <th>IT - UK - BR &nbsp; <a class="btn btn-success btn-mini" href="#"><i class="icon-pencil icon-white"></i>&nbsp;Modifier</a></th>
+        <th>Commencé à / Par</th>
+        <th>Terminé à / Par</th>
+        <th>&nbsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            <a href="#"><i class="icon-arrow-down"></i></a>
+        </td>
+        <td>
+            <pre>crontab -e (*/5 * * * * sh /web/git/scripts/replic_xapian.sh bu)</pre>
+            <a href="" class="btn btn-info btn-mini">Activer</a>
+            <a href="" class="btn btn-warning btn-mini disabled">Annuler</a>
+            <a href="" class="btn btn-danger btn-mini disabled">Terminer</a>
+        </td>
+        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
+                       target="_blank">
+            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+        </a>
+        </td>
+        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
+                       target="_blank">
+            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+        </a></td>
+        <td>
+            <a href="#" class="btn btn-mini"><i class="icon-remove"></i></a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a href="#"><i class="icon-arrow-down"></i></a>
+            <a href="#"><i class="icon-arrow-up"></i></a>
+        </td>
+        <td>
+            <pre>crontab -e (*/5 * * * * sh /web/git/scripts/replic_xapian.sh bu)</pre>
+            <a href="" class="btn btn-info btn-mini">Activer</a>
+            <a href="" class="btn btn-warning btn-mini disabled">Annuler</a>
+            <a href="" class="btn btn-danger btn-mini disabled">Terminer</a>
+        </td>
+        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
+                       target="_blank">
+            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+        </a>
+        </td>
+        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
+                       target="_blank">
+            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+        </a></td>
+        <td>
+            <a href="#" class="btn btn-mini"><i class="icon-remove"></i></a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a href="#"><i class="icon-arrow-down"></i></a>
+            <a href="#"><i class="icon-arrow-up"></i></a>
+        </td>
+        <td>
+            <pre>crontab -e (*/5 * * * * sh /web/git/scripts/replic_xapian.sh bu)</pre>
+            <a href="" class="btn btn-info btn-mini">Activer</a>
+            <a href="" class="btn btn-warning btn-mini disabled">Annuler</a>
+            <a href="" class="btn btn-danger btn-mini disabled">Terminer</a>
+        </td>
+        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
+                       target="_blank">
+            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+        </a>
+        </td>
+        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
+                       target="_blank">
+            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+        </a></td>
+        <td>
+            <a href="#" class="btn btn-mini"><i class="icon-remove"></i></a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a href="#"><i class="icon-arrow-down"></i></a>
+            <a href="#"><i class="icon-arrow-up"></i></a>
+        </td>
+        <td>
+            <pre>crontab -e (*/5 * * * * sh /web/git/scripts/replic_xapian.sh bu)</pre>
+            <a href="" class="btn btn-info btn-mini">Activer</a>
+            <a href="" class="btn btn-warning btn-mini disabled">Annuler</a>
+            <a href="" class="btn btn-danger btn-mini disabled">Terminer</a>
+        </td>
+        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
+                       target="_blank">
+            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+        </a>
+        </td>
+        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
+                       target="_blank">
+            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+        </a></td>
+        <td>
+            <a href="#" class="btn btn-mini"><i class="icon-remove"></i></a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a href="#"><i class="icon-arrow-up"></i></a>
+        </td>
+        <td>
+            <pre>crontab -e (*/5 * * * * sh /web/git/scripts/replic_xapian.sh bu)</pre>
+            <a href="" class="btn btn-info btn-mini disabled">Activer</a>
+            <a href="" class="btn btn-warning btn-mini">Annuler</a>
+            <a href="" class="btn btn-danger btn-mini">Terminer</a>
+        </td>
+        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
+                       target="_blank">
+            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+        </a>
+        </td>
+        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
+                       target="_blank">
+            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+        </a></td>
+        <td>
+            <a href="#" class="btn btn-mini"><i class="icon-remove"></i></a>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="5">
+            <p class="text-center">
+                <a href="" class="btn btn-small"><i class="icon-plus"></i>Ajouter une tâche</a>
+            </p>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><a href="" class="btn btn-small"><i class="icon-plus"></i>Ajouter un Pays</a></p>
 </template>
