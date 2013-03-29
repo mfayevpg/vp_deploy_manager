@@ -14,6 +14,8 @@ Meteor.pages({
 
 MepList = new Meteor.Collection('meps');
 
+
+
 function isLoggedIn(pageInvocation) {
     if (!Meteor.userId() || Meteor.userId() == null) {
         console.log('Meteor.userId()');
