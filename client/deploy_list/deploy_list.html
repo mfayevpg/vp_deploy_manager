@@ -1,0 +1,20 @@
+<template name="deploymentsList">
+  {{#if list}}
+    <div class="well sidebar-nav">
+
+        <ul class="nav nav-list">
+            <li class="nav-header">Deployments</li>
+          {{#each list}}
+              <li class="{{isActiveDeployClass}}"><a href="#">{{date}} - <span class="{{badgeClassDeploy}}">&nbsp;</span></a></li>
+          {{/each}}
+
+            <li><a href="#">01/03/2013 - <span class="badge badge-warning">&nbsp;</span></a></li>
+            <li><a href="#">16/03/2013 - <span class="badge badge-important">&nbsp;</span></a></li>
+            <li><a href="#">31/04/2013 - <span class="badge badge-important">&nbsp;</span></a></li>
+        </ul>
+
+    </div>
+  {{/if}}
+    <a href="{{newDeployPath}}" class="btn"><i class="icon-plus"></i>New Deployment</a>
+    <!--/.well -->
+</template>

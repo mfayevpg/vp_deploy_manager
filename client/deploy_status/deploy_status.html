@@ -1,0 +1,24 @@
+<template name="mepStatus">
+
+    <div class="span4 offset4">
+      {{#if canDisplayStatus}}
+        {{> displayCurrentStatus}}
+      {{else}}
+        {{> editCurrentStatus}}
+      {{/if}}
+    </div>
+</template>
+
+<template name="displayCurrentStatus">
+    <p class="text-center">MEP du {{date}} - <span class="label {{getLabelStatusClass}}">{{getStatusLabel}}</span></p>
+</template>
+<template name="editCurrentStatus">
+    <p class="text-center">
+        MEP du <input type="text" id="currentDeployDate" value="{{date}}"> -
+      <select id="currentDeployStatus">
+          <option selected="{{isStatusSelected 'edit'}}" value="edit">En cours d'édition</option>
+          <option selected="{{isStatusSelected 'in_progress'}}" value="in_progress" >En cours</option>
+      </select>
+      <a href="#" class="btn btn-success btn-mini"><i class="icon-pencil icon-white"></i> Modifier</a>
+    </p>
+</template>

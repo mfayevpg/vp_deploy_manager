@@ -5,7 +5,9 @@
  */
 Meteor.pages({
     '/login': { to: 'loggingForm', as: 'pleaseLogin'},
-    '/': {to: 'mainDisplay', before: isLoggedIn, layout: 'loggedLayout'}
+    '/': {to: 'mainDisplay', before: isLoggedIn, layout: 'loggedLayout'},
+    '/deploy/new': {to: 'mainDisplay', as: 'newDeploy', before: [isLoggedIn, createEmpty], layout: 'loggedLayout'},
+    '/deploy/edit/:_id': {to: 'mainDisplay', as: 'editDeploy', before: [isLoggedIn, setCurrentDeploy], layout: 'loggedLayout'}
 }, {
     defaults: {
         layout: 'notLoggedLayout'
@@ -18,6 +20,24 @@ function isLoggedIn(pageInvocation) {
         pageInvocation.redirect(Meteor.pleaseLoginPath());
     }
 }
+
+function createEmpty(pageInvocation){
+    Meteor.call('createEmptyDeploy', function(err, result){
+        if(err){
+            throw err;
+        }
+        if(result){
+            pageInvocation.redirect(Meteor.editDeployPath() + result);
+        }
+    });
+}
+
+function setCurrentDeploy(pageInvocation){
+    console.log();
+    var currentDeploy = DeploymentList.findOne({_id: pageInvocation.params._id});
+    Session.set('currentDeploy',currentDeploy);
+}
+
 Meteor.autorun(function () {
     if (Meteor.userId() && Meteor.userId() != null) {
         Meteor.router.go(Meteor.mainDisplayPath());
@@ -40,32 +60,40 @@ Template.timezoneList.helpers({
     }
 });
 
+function updateTime(utcTime, result, $currentLi) {
+    var localizedTimestamp = utcTime + parseInt(result.dstOffset) + parseInt(result.rawOffset);
+    var localizedDate = new Date(localizedTimestamp * 1000);
+    $currentLi.text(localizedDate.getHours() + ':' + localizedDate.getMinutes());
+}
 Template.timezoneDisplay.rendered = function () {
     var location = this.data.location;
     var countryCode = this.data.countryCode;
     setLocalizedTime(location, countryCode);
     setInterval(function(){
         setLocalizedTime(location, countryCode);
-    } , 10000);
+    } , 1000);
 
     function setLocalizedTime(location, countryCode) {
         var utcTime = (new Date().getTime() / 1000) + (new Date().getTimezoneOffset() * 60);
         var $currentLi = $('#timezone_' + countryCode);
-        console.log('Calling setLocalizedTime', location, utcTime, $currentLi.text());
-        var googleRequestTemplate = 'https://maps.googleapis.com/maps/api/timezone/json?location=#LOCATION#&timestamp=' + utcTime + '&sensor=false';
-        Meteor.http.get(googleRequestTemplate.replace('#LOCATION#', location), function (err, result) {
-            if (err) {
-                throw err;
-            } else {
-                if (result.data.status == 'OK') {
-                    var localizedTimestamp = utcTime + parseInt(result.data.dstOffset) + parseInt(result.data.rawOffset);
-                    var localizedDate = new Date(localizedTimestamp * 1000);
-                    console.log(localizedDate.getHours() + ':' + localizedDate.getMinutes());
-                    $currentLi.text(localizedDate.getHours() + ':' + localizedDate.getMinutes());
+        var sessionTimezone = Session.get('timezoneList_' + countryCode);
+        if(!sessionTimezone || sessionTimezone == ''){
+            var googleRequestTemplate = 'https://maps.googleapis.com/maps/api/timezone/json?location=#LOCATION#&timestamp=' + utcTime + '&sensor=false';
+            console.log(googleRequestTemplate.replace('#LOCATION#', location));
+            Meteor.http.get(googleRequestTemplate.replace('#LOCATION#', location), function (err, result) {
+                if (err) {
+                    throw err;
                 } else {
-                    console.log(result);
+                    if (result.data.status == 'OK') {
+                        Session.set('timezoneList_' + countryCode, result.data);
+                        updateTime(utcTime, result.data, $currentLi);
+                    } else {
+                        console.log(result);
+                    }
                 }
-            }
-        });
+            });
+        }else {
+            updateTime(utcTime, sessionTimezone, $currentLi);
+        }
     }
 };
