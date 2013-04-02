@@ -1,20 +1,24 @@
 <template name="mepStatus">
 
     <div class="span4 offset4">
-        <p class="text-center">MEP du 20/02/2013 - <span class="label label-important">Terminée</span>
-            <span class="label">En cours d'Edition</span>
-            <span class="label label-warning">En cours</span>
-
-        <div class="btn-group">
-            <button class="btn btn-small">Passer en mode</button>
-            <button class="btn btn-small dropdown-toggle" data-toggle="dropdown">
-                <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu btn-small">
-                <li><a>En cours d'Edition</a></li>
-                <li><a>En cours</a></li>
-            </ul>
-        </div>
-        </p>
+      {{#if canDisplayStatus}}
+        {{> displayCurrentStatus}}
+      {{else}}
+        {{> editCurrentStatus}}
+      {{/if}}
     </div>
+</template>
+
+<template name="displayCurrentStatus">
+    <p class="text-center">MEP du {{date}} - <span class="label {{getLabelStatusClass}}">{{getStatusLabel}}</span></p>
+</template>
+<template name="editCurrentStatus">
+    <p class="text-center">
+        MEP du <input type="text" id="currentDeployDate" value="{{date}}"> -
+      <select id="currentDeployStatus">
+          <option selected="{{isStatusSelected 'edit'}}" value="edit">En cours d'édition</option>
+          <option selected="{{isStatusSelected 'in_progress'}}" value="in_progress" >En cours</option>
+      </select>
+      <a href="#" class="btn btn-success btn-mini"><i class="icon-pencil icon-white"></i> Modifier</a>
+    </p>
 </template>

@@ -5,16 +5,14 @@
  */
 Meteor.pages({
     '/login': { to: 'loggingForm', as: 'pleaseLogin'},
-    '/': {to: 'mainDisplay', before: isLoggedIn, layout: 'loggedLayout'}
+    '/': {to: 'mainDisplay', before: isLoggedIn, layout: 'loggedLayout'},
+    '/deploy/new': {to: 'mainDisplay', as: 'newDeploy', before: [isLoggedIn, createEmpty], layout: 'loggedLayout'},
+    '/deploy/edit/:_id': {to: 'mainDisplay', as: 'editDeploy', before: [isLoggedIn, setCurrentDeploy], layout: 'loggedLayout'}
 }, {
     defaults: {
         layout: 'notLoggedLayout'
     }
 });
-
-MepList = new Meteor.Collection('meps');
-
-
 
 function isLoggedIn(pageInvocation) {
     if (!Meteor.userId() || Meteor.userId() == null) {
@@ -22,6 +20,24 @@ function isLoggedIn(pageInvocation) {
         pageInvocation.redirect(Meteor.pleaseLoginPath());
     }
 }
+
+function createEmpty(pageInvocation){
+    Meteor.call('createEmptyDeploy', function(err, result){
+        if(err){
+            throw err;
+        }
+        if(result){
+            pageInvocation.redirect(Meteor.editDeployPath() + result);
+        }
+    });
+}
+
+function setCurrentDeploy(pageInvocation){
+    console.log();
+    var currentDeploy = DeploymentList.findOne({_id: pageInvocation.params._id});
+    Session.set('currentDeploy',currentDeploy);
+}
+
 Meteor.autorun(function () {
     if (Meteor.userId() && Meteor.userId() != null) {
         Meteor.router.go(Meteor.mainDisplayPath());

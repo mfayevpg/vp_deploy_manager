@@ -3,13 +3,6 @@
  * Date: 29/03/13
  * Time: 16:18
  */
-
-Meteor.autorun(function(){
-    Meteor.subscribe('availablePlayers', function(){
-        console.log('Subscribe done');
-    });
-});
-
 Template.playerList.rendered = function(){
     var $typeahead = $('.typeahead');
     if($typeahead.length > 0){
@@ -36,6 +29,16 @@ Template.playerList.events({
 Template.playerList.helpers({
     isUpdate: function(){
         return Session.get(PlayersWidget.isUpdateSessionKey);
+    },
+
+    playerList : function(){
+        var currentDeploy = Session.get('currentDeploy');
+        var out = null;
+        if(currentDeploy){
+            out = currentDeploy.playerList;
+        }
+
+        return out;
     }
 });
 
