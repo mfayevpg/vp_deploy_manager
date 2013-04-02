@@ -22,3 +22,12 @@ Meteor.users.allow({
         return isAdmin(userId);
     }
 });
+
+DeploymentList.allow({
+    insert:function(userId){
+        return isAdmin(userId);
+    },
+    update:function(userId){
+        return (userId != null);
+    }
+});

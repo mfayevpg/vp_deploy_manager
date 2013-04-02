@@ -62,6 +62,14 @@ Template.displayCurrentStatus.helpers({
         }
 
         return out;
+    },
+    date: function(){
+        var date2 = Session.get('currentDeploy');
+        var out = '';
+        if(date2){
+            out = date2.date;
+        }
+        return out;
     }
 });
 
@@ -70,7 +78,7 @@ Template.editCurrentStatus.helpers({
         var currentDeploy = Session.get('currentDeploy');
         var out = '';
         if (currentDeploy && currentDeploy.status == status) {
-            out = 'selected';
+            out = 'selected="selected"';
         }
 
         return out;
@@ -81,9 +89,9 @@ Template.editCurrentStatus.events({
     'click a.btn.btn-success.btn-mini': function (event) {
         event.preventDefault();
         console.log('TOTO');
-        var $date = $('currentDeployDate');
-        var $status = $('currentDeployStatus');
-        console.log($date.val());
+        var $date = $('#currentDeployDate');
+        var $status = $('#currentDeployStatus');
+        console.log($status.attr('value'));
         if ($status.val() != '' && $date.val() != '') {
             var currentDeploy = Session.get('currentDeploy');
             currentDeploy.date = $date.val();
