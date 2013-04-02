@@ -78,11 +78,12 @@ Template.editCurrentStatus.helpers({
 });
 
 Template.editCurrentStatus.events({
-    'click a#btn.btn-success.btn-mini': function (event) {
+    'click a.btn.btn-success.btn-mini': function (event) {
         event.preventDefault();
+        console.log('TOTO');
         var $date = $('currentDeployDate');
         var $status = $('currentDeployStatus');
-
+        console.log($date.val());
         if ($status.val() != '' && $date.val() != '') {
             var currentDeploy = Session.get('currentDeploy');
             currentDeploy.date = $date.val();

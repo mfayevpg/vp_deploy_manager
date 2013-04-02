@@ -7,7 +7,8 @@ Meteor.pages({
     '/login': { to: 'loggingForm', as: 'pleaseLogin'},
     '/': {to: 'mainDisplay', before: isLoggedIn, layout: 'loggedLayout'},
     '/deploy/new': {to: 'mainDisplay', as: 'newDeploy', before: [isLoggedIn, createEmpty], layout: 'loggedLayout'},
-    '/deploy/edit/:_id': {to: 'mainDisplay', as: 'editDeploy', before: [isLoggedIn, setCurrentDeploy], layout: 'loggedLayout'}
+    '/deploy/edit/:_id': {to: 'mainDisplay', as: 'editDeploy', before: [isLoggedIn, setCurrentDeploy], layout: 'loggedLayout'},
+    '/admin':{to:'userListDisplay', before:[isLoggedIn, isCurrentUserAdmin], layout: 'loggedLayout'}
 }, {
     defaults: {
         layout: 'notLoggedLayout'
@@ -21,21 +22,21 @@ function isLoggedIn(pageInvocation) {
     }
 }
 
-function createEmpty(pageInvocation){
-    Meteor.call('createEmptyDeploy', function(err, result){
-        if(err){
+function createEmpty(pageInvocation) {
+    Meteor.call('createEmptyDeploy', function (err, result) {
+        if (err) {
             throw err;
         }
-        if(result){
+        if (result) {
             pageInvocation.redirect(Meteor.editDeployPath() + result);
         }
     });
 }
 
-function setCurrentDeploy(pageInvocation){
+function setCurrentDeploy(pageInvocation) {
     console.log();
     var currentDeploy = DeploymentList.findOne({_id: pageInvocation.params._id});
-    Session.set('currentDeploy',currentDeploy);
+    Session.set('currentDeploy', currentDeploy);
 }
 
 Meteor.autorun(function () {
@@ -69,15 +70,15 @@ Template.timezoneDisplay.rendered = function () {
     var location = this.data.location;
     var countryCode = this.data.countryCode;
     setLocalizedTime(location, countryCode);
-    setInterval(function(){
+    setInterval(function () {
         setLocalizedTime(location, countryCode);
-    } , 1000);
+    }, 1000);
 
     function setLocalizedTime(location, countryCode) {
         var utcTime = (new Date().getTime() / 1000) + (new Date().getTimezoneOffset() * 60);
         var $currentLi = $('#timezone_' + countryCode);
         var sessionTimezone = Session.get('timezoneList_' + countryCode);
-        if(!sessionTimezone || sessionTimezone == ''){
+        if (!sessionTimezone || sessionTimezone == '') {
             var googleRequestTemplate = 'https://maps.googleapis.com/maps/api/timezone/json?location=#LOCATION#&timestamp=' + utcTime + '&sensor=false';
             console.log(googleRequestTemplate.replace('#LOCATION#', location));
             Meteor.http.get(googleRequestTemplate.replace('#LOCATION#', location), function (err, result) {
@@ -92,8 +93,28 @@ Template.timezoneDisplay.rendered = function () {
                     }
                 }
             });
-        }else {
+        } else {
             updateTime(utcTime, sessionTimezone, $currentLi);
         }
     }
 };
+
+function isCurrentUserAdmin(pageInvocation){
+    var out = false;
+    if (Meteor.userId()) {
+        var count = Meteor.users.find({$and: [
+            {isAdmin: true},
+            {_id: Meteor.userId()}
+        ] }).count();
+        out = (count == 1);
+    }
+    if(pageInvocation && !out){
+        pageInvocation.redirect(Meteor.mainDisplayPath());
+    }
+
+    return out;
+}
+Handlebars.registerHelper('isAdmin', function () {
+        return isCurrentUserAdmin();
+    }
+);

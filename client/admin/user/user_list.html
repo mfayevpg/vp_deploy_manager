@@ -1,0 +1,25 @@
+<template name="userListDisplay">
+
+    {{#if userList}}
+        <table>
+            <thead>
+            <tr>
+                <th>Avatar</th>
+                <th>e-mail</th>
+                <th>is admin</th>
+            </tr>
+            </thead>
+            <tbody>
+                {{#each userList}}
+                <tr>
+                    <td>
+                        <img src="{{profile.avatar_url}}" style="height: 32px; width: 32px;" />
+                        </td>
+                    <td>{{profile.email}}</td>
+                    <td><input type="checkbox" id="{{_id}}" {{isChecked}} {{isDisabled}} /></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    {{/if}}
+</template>

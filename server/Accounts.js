@@ -25,7 +25,11 @@ Accounts.validateNewUser(function (user) {
             }
         }
     }
-    return found;
+//    if(!found){
+//        throw new Meteor.Error(403, 'You must be part of VPG organization to join this app');
+//    }
+//    return found;
+    return true;
 });
 
 Accounts.onCreateUser(function (options, user) {

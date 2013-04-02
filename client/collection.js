@@ -7,5 +7,9 @@
 DeploymentList = new Meteor.Collection('deployments');
 
 Meteor.subscribe('deployment-list', function(){
-    console.log('Done');
+    console.log('deployment-list Done');
+});
+
+Meteor.subscribe('users', function(){
+    console.log('users Done');
 });
