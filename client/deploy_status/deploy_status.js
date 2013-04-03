@@ -134,26 +134,28 @@ Template.adminActions.events({
     'click a#toEdit': function (event) {
         event.preventDefault();
         switchStatus('edit');
-    },
-    'click a#deleteDeploy': function (event) {
+    }
+});
+
+Template.modalRemovalConfirmation.helpers({
+    date: function () {
+        return getCurrentDeployDate();
+    }
+});
+
+Template.modalRemovalConfirmation.events({
+    'click #deleteDeploy': function (event) {
         event.preventDefault();
         var currentDeploy = Session.get('currentDeploy');
         if (currentDeploy && currentDeploy._id) {
-            var firstClick = Session.get('confirmationAskedForRemoval');
-            if (!firstClick) {
-                Session.set('confirmationAskedForRemoval', currentDeploy._id);
-                $('#' + event.target.id).text('Are you Sure ?');
-            } else {
-                if (firstClick == currentDeploy._id) {
-                    DeploymentList.remove({_id: currentDeploy._id}, function (err) {
-                        if (err) {
-                            throw err;
-                        }
-                        Session.set('confirmationAskedForRemoval', null);
-                        Session.set('currentDeploy', null);
-                    });
+            $('#myModal').modal('hide');
+            DeploymentList.remove({_id: currentDeploy._id}, function (err) {
+                if (err) {
+                    throw err;
                 }
-            }
+                Session.set('confirmationAskedForRemoval', null);
+                Session.set('currentDeploy', null);
+            });
         }
     }
 });
