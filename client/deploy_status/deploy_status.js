@@ -33,69 +33,84 @@ Template.mepStatus.helpers({
     }
 });
 
+Template.displayCurrentStatus.events({
+    'click a#updateDate': function(event){
+        event.preventDefault();
+        Session.set('isUpdateDeployStatus', true);
+    }
+});
+
+function getLabelStatusClass(){
+    var currentDeploy = Session.get('currentDeploy');
+    var out = '';
+    if(currentDeploy){
+        if (currentDeploy.status == 'in_progress') {
+            out = 'label-warning';
+        } else if (currentDeploy.status == 'done') {
+            out = 'label-important';
+        }
+    }
+
+    return out;
+}
+
+function getStatusLabel(){
+    var currentDeploy = Session.get('currentDeploy');
+    var out = '';
+    if(currentDeploy){
+        if (currentDeploy.status == 'in_progress') {
+            out = 'En cours';
+        } else if (currentDeploy.status == 'done') {
+            out = 'Terminé';
+        } else if (currentDeploy.status == 'edit') {
+            out = "En cours d'édition";
+        }
+    }
+
+    return out;
+}
+
+function getCurrentDeployDate(){
+    var date2 = Session.get('currentDeploy');
+    var out = '';
+    if(date2){
+        out = date2.date;
+    }
+    return out;
+}
+
 Template.displayCurrentStatus.helpers({
     getLabelStatusClass: function () {
-        var currentDeploy = Session.get('currentDeploy');
-        var out = '';
-        if(currentDeploy){
-            if (currentDeploy.status == 'in_progress') {
-                out = 'label-warning';
-            } else if (currentDeploy.status == 'done') {
-                out = 'label-important';
-            }
-        }
-
-        return out;
+        return getLabelStatusClass();
     },
     getStatusLabel: function () {
-        var currentDeploy = Session.get('currentDeploy');
-        var out = '';
-        if(currentDeploy){
-            if (currentDeploy.status == 'in_progress') {
-                out = 'En cours';
-            } else if (currentDeploy.status == 'done') {
-                out = 'Terminé';
-            } else if (currentDeploy.status == 'edit') {
-                out = "En cours d'édition";
-            }
-        }
-
-        return out;
+        return getStatusLabel();
     },
     date: function(){
-        var date2 = Session.get('currentDeploy');
-        var out = '';
-        if(date2){
-            out = date2.date;
-        }
-        return out;
+        return getCurrentDeployDate();
     }
 });
 
 Template.editCurrentStatus.helpers({
-    isStatusSelected: function (status) {
-        var currentDeploy = Session.get('currentDeploy');
-        var out = '';
-        if (currentDeploy && currentDeploy.status == status) {
-            out = 'selected="selected"';
-        }
-
-        return out;
+    getLabelStatusClass: function () {
+        return getLabelStatusClass();
+    },
+    getStatusLabel: function () {
+        return getStatusLabel();
+    },
+    date: function(){
+        return getCurrentDeployDate();
     }
 });
 
 Template.editCurrentStatus.events({
     'click a.btn.btn-success.btn-mini': function (event) {
         event.preventDefault();
-        console.log('TOTO');
         var $date = $('#currentDeployDate');
-        var $status = $('#currentDeployStatus');
-        console.log($status.attr('value'));
-        if ($status.val() != '' && $date.val() != '') {
+        if ($date.val() != '') {
             var currentDeploy = Session.get('currentDeploy');
             currentDeploy.date = $date.val();
-            currentDeploy.status = $status.val();
-            DeploymentList.update({_id: currentDeploy._id}, {$set:{date:$date.val(), status:$status.val()}});
+            DeploymentList.update({_id: currentDeploy._id}, {$set:{date:$date.val()}});
             Session.set('currentDeploy', currentDeploy);
         }
         Session.set('isUpdateDeployStatus', false);
