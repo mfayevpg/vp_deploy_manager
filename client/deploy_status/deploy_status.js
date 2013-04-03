@@ -7,7 +7,6 @@ Template.mepStatus.helpers({
     canDisplayStatus: function () {
         var currentDeploy = Session.get('currentDeploy');
         var isUpdate = Session.get('isUpdateDeployStatus');
-        console.log(currentDeploy);
         var out = false;
         if (currentDeploy) {
             out = (currentDeploy.date != null);
