@@ -34,16 +34,16 @@ Template.mepStatus.helpers({
 });
 
 Template.displayCurrentStatus.events({
-    'click a#updateDate': function(event){
+    'click a#updateDate': function (event) {
         event.preventDefault();
         Session.set('isUpdateDeployStatus', true);
     }
 });
 
-function getLabelStatusClass(){
+function getLabelStatusClass() {
     var currentDeploy = Session.get('currentDeploy');
     var out = '';
-    if(currentDeploy){
+    if (currentDeploy) {
         if (currentDeploy.status == 'in_progress') {
             out = 'label-warning';
         } else if (currentDeploy.status == 'done') {
@@ -54,10 +54,10 @@ function getLabelStatusClass(){
     return out;
 }
 
-function getStatusLabel(){
+function getStatusLabel() {
     var currentDeploy = Session.get('currentDeploy');
     var out = '';
-    if(currentDeploy){
+    if (currentDeploy) {
         if (currentDeploy.status == 'in_progress') {
             out = 'In Progress';
         } else if (currentDeploy.status == 'done') {
@@ -70,10 +70,10 @@ function getStatusLabel(){
     return out;
 }
 
-function getCurrentDeployDate(){
+function getCurrentDeployDate() {
     var date2 = Session.get('currentDeploy');
     var out = '';
-    if(date2){
+    if (date2) {
         out = date2.date;
     }
     return out;
@@ -86,7 +86,7 @@ Template.displayCurrentStatus.helpers({
     getStatusLabel: function () {
         return getStatusLabel();
     },
-    date: function(){
+    date: function () {
         return getCurrentDeployDate();
     }
 });
@@ -98,7 +98,7 @@ Template.editCurrentStatus.helpers({
     getStatusLabel: function () {
         return getStatusLabel();
     },
-    date: function(){
+    date: function () {
         return getCurrentDeployDate();
     }
 });
@@ -110,42 +110,50 @@ Template.editCurrentStatus.events({
         if ($date.val() != '') {
             var currentDeploy = Session.get('currentDeploy');
             currentDeploy.date = $date.val();
-            DeploymentList.update({_id: currentDeploy._id}, {$set:{date:$date.val()}});
+            DeploymentList.update({_id: currentDeploy._id}, {$set: {date: $date.val()}});
             Session.set('currentDeploy', currentDeploy);
         }
         Session.set('isUpdateDeployStatus', false);
     }
 });
 
-function switchStatus(newStatus){
+function switchStatus(newStatus) {
     var currentDeploy = Session.get('currentDeploy');
-    if(currentDeploy && currentDeploy._id){
+    if (currentDeploy && currentDeploy._id) {
         currentDeploy.status = newStatus;
-        DeploymentList.update({_id: currentDeploy._id}, {$set:{status: currentDeploy.status}});
+        DeploymentList.update({_id: currentDeploy._id}, {$set: {status: currentDeploy.status}});
         Session.set('currentDeploy', currentDeploy);
     }
 }
 
 Template.adminActions.events({
-    'click a#toInProgress': function(event){
+    'click a#toInProgress': function (event) {
         event.preventDefault();
         switchStatus('in_progress');
     },
-    'click a#toEdit': function(event){
+    'click a#toEdit': function (event) {
         event.preventDefault();
         switchStatus('edit');
     },
-    'click a#deleteDeploy': function(event){
+    'click a#deleteDeploy': function (event) {
         event.preventDefault();
         var currentDeploy = Session.get('currentDeploy');
-        if(currentDeploy && currentDeploy._id){
-            DeploymentList.remove({_id: currentDeploy._id}, function(err){
-                if(err){
-                    throw err;
+        if (currentDeploy && currentDeploy._id) {
+            var firstClick = Session.get('confirmationAskedForRemoval');
+            if (!firstClick) {
+                Session.set('confirmationAskedForRemoval', currentDeploy._id);
+                $('#' + event.target.id).text('Are you Sure ?');
+            } else {
+                if (firstClick == currentDeploy._id) {
+                    DeploymentList.remove({_id: currentDeploy._id}, function (err) {
+                        if (err) {
+                            throw err;
+                        }
+                        Session.set('confirmationAskedForRemoval', null);
+                        Session.set('currentDeploy', null);
+                    });
                 }
-                Session.set('currentDeploy', null);
-//                Meteor.router.go(Meteor.)
-            });
+            }
         }
     }
 });
