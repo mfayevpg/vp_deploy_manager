@@ -59,11 +59,11 @@ function getStatusLabel(){
     var out = '';
     if(currentDeploy){
         if (currentDeploy.status == 'in_progress') {
-            out = 'En cours';
+            out = 'In Progress';
         } else if (currentDeploy.status == 'done') {
-            out = 'Terminé';
+            out = 'Done';
         } else if (currentDeploy.status == 'edit') {
-            out = "En cours d'édition";
+            out = "Editing";
         }
     }
 
