@@ -34,5 +34,8 @@ DeploymentList.allow({
             out = isAdmin(userId);
         }
         return out;
+    },
+    remove:function(userId){
+        return isAdmin(userId);
     }
 });

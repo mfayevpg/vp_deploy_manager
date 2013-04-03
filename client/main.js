@@ -137,3 +137,8 @@ Handlebars.registerHelper('isEdit', function () {
         return checkStatus('edit');
     }
 );
+
+Handlebars.registerHelper('isDone', function () {
+        return checkStatus('done');
+    }
+);

@@ -126,7 +126,7 @@ function switchStatus(newStatus){
     }
 }
 
-Template.modeSwitcher.events({
+Template.adminActions.events({
     'click a#toInProgress': function(event){
         event.preventDefault();
         switchStatus('in_progress');
@@ -134,5 +134,18 @@ Template.modeSwitcher.events({
     'click a#toEdit': function(event){
         event.preventDefault();
         switchStatus('edit');
+    },
+    'click a#deleteDeploy': function(event){
+        event.preventDefault();
+        var currentDeploy = Session.get('currentDeploy');
+        if(currentDeploy && currentDeploy._id){
+            DeploymentList.remove({_id: currentDeploy._id}, function(err){
+                if(err){
+                    throw err;
+                }
+                Session.set('currentDeploy', null);
+//                Meteor.router.go(Meteor.)
+            });
+        }
     }
 });

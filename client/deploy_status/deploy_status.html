@@ -15,7 +15,7 @@
             <a href="#" class="btn btn-success btn-mini" id="updateDate"><i class="icon-pencil icon-white"></i> Update</a>
         {{/if}}
         {{#if isAdmin}}
-            {{> modeSwitcher}}
+            {{> adminActions}}
         {{/if}}
     </p>
 </template>
@@ -26,11 +26,14 @@
         <a href="#" class="btn btn-success btn-mini" id="updateStatus"><i class="icon-pencil icon-white"></i> Update</a>
     </p>
 </template>
-<template name="modeSwitcher">
+<template name="adminActions">
     {{#if isEdit}}
         <a href="#" class="btn btn-mini btn-warning" id="toInProgress"><i class="icon-warning-sign"></i> Switch to "In progress"</a>
     {{/if}}
     {{#if isInProgress}}
         <a href="#" class="btn btn-mini" id="toEdit"><i class="icon-warning-sign"></i> Switch to "Editing"</a>
     {{/if}}
+    {{#unless isDone}}
+        <a href="#" class="btn btn-mini btn-danger" id="deleteDeploy"><i class="icon-warning-sign"></i> Delete deploy</a>
+    {{/unless}}
 </template>
