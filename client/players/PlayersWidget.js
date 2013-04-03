@@ -6,13 +6,12 @@
 var PlayersWidget = {
     isUpdateSessionKey: 'isPlayerListUpdate',
     checkForAvailablePlayers: function(query, process){
-        var currentDeploy = Session.get('currentDeploy');
         var out = [];
+        var currentDeploy = Session.get('currentDeploy');
         if(currentDeploy && currentDeploy._id){
             var idList = _.pluck(currentDeploy.playerList, '_id');
-            console.log(idList);
-            Meteor.users.find({'playerList._id' : {$nin : idList}}).forEach(function(player){
-                var html = '<img src="' + player.profile.avatar_url + '" style="height: 32px; width: 32px" /> ' + player.profile.name;
+            Meteor.users.find({_id : {$nin : idList}}).forEach(function(player){
+                var html = '<img src="' + player.profile.avatar_url + '" style="height: 32px; width: 32px" data-player="' + player._id + '" /> ' + player.profile.name;
                 out.push(html);
             });
         }
@@ -20,6 +19,19 @@ var PlayersWidget = {
         return out;
     },
     updateCurrentPlayerList : function(selectedItem){
-
+        var addedUserId = $(selectedItem).data('player')
+        var currentDeploy = Session.get('currentDeploy');
+        if(currentDeploy && currentDeploy._id){
+            var addedUser = Meteor.users.findOne({_id: addedUserId});
+            var embeddedUser = _.pick(addedUser.profile,'avatar_url', 'name', 'html_url');
+            embeddedUser['_id'] = addedUser._id;
+            DeploymentList.update({_id: currentDeploy._id}, {$push : {playerList: embeddedUser}}, {}, function(err){
+                if(err){
+                    throw err;
+                }
+                console.log('Updated');
+                currentDeploy.playerList.push(embeddedUser);
+            });
+        }
     }
 };

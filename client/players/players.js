@@ -23,17 +23,38 @@ Template.playerList.events({
         }else{
             Session.set(PlayersWidget.isUpdateSessionKey, false);
         }
+    },
+    'click [id*=removePlayer_]':function(event){
+        event.preventDefault();
+        var self = this;
+        var currentDeploy = Session.get('currentDeploy');
+        if(currentDeploy && currentDeploy._id){
+            DeploymentList.find({_id: currentDeploy._id}).forEach(function(deploy){
+                var newPlayerList = _.reject(deploy.playerList, function(player){
+                    return (player._id == self._id);
+                });
+                newPlayerList = _.toArray(newPlayerList);
+                DeploymentList.update({_id: deploy._id}, {$set: {playerList: newPlayerList}}, function(err){
+                    if(err){
+                        throw err;
+                    }
+                    currentDeploy.playerList = newPlayerList;
+                    Session.set('currentDeploy', currentDeploy);
+                });
+
+            });
+        }
     }
 });
 
 Template.playerList.helpers({
     isUpdate: function(){
-        return Session.get(PlayersWidget.isUpdateSessionKey);
+        return (Session.get(PlayersWidget.isUpdateSessionKey) && Handlebars._default_helpers.isEdit());
     },
 
     playerList : function(){
-        var currentDeploy = Session.get('currentDeploy');
         var out = null;
+        var currentDeploy = Session.get('currentDeploy');
         if(currentDeploy){
             out = currentDeploy.playerList;
         }
