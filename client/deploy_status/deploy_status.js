@@ -101,3 +101,23 @@ Template.editCurrentStatus.events({
         Session.set('isUpdateDeployStatus', false);
     }
 });
+
+function switchStatus(newStatus){
+    var currentDeploy = Session.get('currentDeploy');
+    if(currentDeploy && currentDeploy._id){
+        currentDeploy.status = newStatus;
+        DeploymentList.update({_id: currentDeploy._id}, {$set:{status: currentDeploy.status}});
+        Session.set('currentDeploy', currentDeploy);
+    }
+}
+
+Template.modeSwitcher.events({
+    'click a#toInProgress': function(event){
+        event.preventDefault();
+        switchStatus('in_progress');
+    },
+    'click a#toEdit': function(event){
+        event.preventDefault();
+        switchStatus('edit');
+    }
+});

@@ -62,24 +62,33 @@
                 {{> deploymentsList}}
             </div>
             <!--/span-->
-            <div class="span10">
-                <div class="row-fluid">
-                    {{> mepStatus}}
+            {{#if currentDeploy}}
+
+                <div class="span10">
+                    <div class="row-fluid">
+                        {{> mepStatus}}
+                    </div>
+                    <div class="row-fluid">
+                        {{> playerList}}
+                        {{> branchList}}
+                    </div>
+                    <!--/row-->
+                    <div class="row-fluid">
+                        {{> taskList}}
+                    </div>
+                    <div class="row-fluid">
+                        {{#if isAdmin}}
+                            <a href="" class="btn btn-success pull-left">Dupliquer</a>
+                        {{/if}}
+                        <a href="" class="btn btn-danger pull-right">Terminer</a>
+                    </div>
                 </div>
-                <div class="row-fluid">
-                    {{> playerList}}
-                    {{> branchList}}
+                <!--/span-->
+            {{else}}
+                <div class="well span10">
+                    Nothing to display
                 </div>
-                <!--/row-->
-                <div class="row-fluid">
-                    {{> taskList}}
-                </div>
-                <div class="row-fluid">
-                    <a href="" class="btn btn-success pull-left">Dupliquer</a>
-                    <a href="" class="btn btn-danger pull-right">Terminer</a>
-                </div>
-            </div>
-            <!--/span-->
+            {{/if}}
         </div>
         <!--/row-->
         {{> footer}}

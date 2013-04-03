@@ -27,7 +27,12 @@ DeploymentList.allow({
     insert:function(userId){
         return isAdmin(userId);
     },
-    update:function(userId){
-        return (userId != null);
+    update:function(userId, doc, fieldNames, modifier){
+        //Only admin are allowed to update status
+        var out = (userId != null);
+        if(_.indexOf(fieldNames, 'status') != -1){
+            out = isAdmin(userId);
+        }
+        return out;
     }
 });

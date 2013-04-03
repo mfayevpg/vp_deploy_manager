@@ -114,7 +114,27 @@ function isCurrentUserAdmin(pageInvocation){
 
     return out;
 }
+
 Handlebars.registerHelper('isAdmin', function () {
         return isCurrentUserAdmin();
+    }
+);
+
+function checkStatus(statusToCheck){
+    var currentDeploy = Session.get('currentDeploy');
+    var out = false;
+    if(currentDeploy && currentDeploy._id){
+        out = (currentDeploy.status == statusToCheck);
+    }
+    return out;
+}
+
+Handlebars.registerHelper('isInProgress', function () {
+        return checkStatus('in_progress');
+    }
+);
+
+Handlebars.registerHelper('isEdit', function () {
+        return checkStatus('edit');
     }
 );
