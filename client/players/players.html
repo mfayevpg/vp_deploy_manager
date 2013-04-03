@@ -8,7 +8,7 @@
                     <a href="{{html_url}}" title="{{name}}" target="_blank">
                         <img style="height: 32px; width: 32px;" src="{{avatar_url}}">
                     </a>
-                  {{#if isUpdate}}
+                  {{#if canDelete}}
                       <a href="#" class="btn btn-mini" id="removePlayer_{{_id}}"><i class="icon-remove-circle"></i></a>
                   {{/if}}
                 </li>

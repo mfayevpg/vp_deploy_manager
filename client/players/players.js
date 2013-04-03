@@ -47,9 +47,16 @@ Template.playerList.events({
     }
 });
 
+function canUpdate() {
+    return (Session.get(PlayersWidget.isUpdateSessionKey) && Handlebars._default_helpers.isEdit());
+}
 Template.playerList.helpers({
     isUpdate: function(){
-        return (Session.get(PlayersWidget.isUpdateSessionKey) && Handlebars._default_helpers.isEdit());
+        return canUpdate();
+    },
+
+    canDelete: function(){
+        return canUpdate() && (this._id != Meteor.userId());
     },
 
     playerList : function(){

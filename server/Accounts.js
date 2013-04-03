@@ -25,6 +25,7 @@ Accounts.validateNewUser(function (user) {
             }
         }
     }
+    //TODO : Put organization verification back on before putting to production
 //    if(!found){
 //        throw new Meteor.Error(403, 'You must be part of VPG organization to join this app');
 //    }

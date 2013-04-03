@@ -159,7 +159,7 @@ Handlebars.registerHelper('isDone', function () {
 
 Handlebars.registerHelper('canUpdate', function () {
         var out = (checkStatus('edit') && isPlayer());
-        out = (out || isAdmin());
+        out = (out || isCurrentUserAdmin());
         return out;
     }
 );
