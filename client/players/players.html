@@ -1,12 +1,12 @@
 <template name="playerList">
     <div class="span6">
-        <h4>Participants</h4>
+        <h4>Player list</h4>
       {{#if playerList}}
           <ul class="inline">
             {{#each playerList}}
                 <li>
-                    <a href="{{profile.html_url}}" title="{{profile.name}}" target="_blank">
-                        <img style="height: 32px; width: 32px;" src="{{profile.avatar_url}}">
+                    <a href="{{html_url}}" title="{{name}}" target="_blank">
+                        <img style="height: 32px; width: 32px;" src="{{avatar_url}}">
                     </a>
                   {{#if isUpdate}}
                       <a href="" class="btn btn-mini"><i class="icon-remove-circle"></i></a>
@@ -18,7 +18,9 @@
   {{#if isUpdate}}
     <input type="text" class="typeahead" autocomplete="off" />
   {{/if}}
-        <p><a class="btn btn-success btn-mini" href="#" id="updatePlayersList"><i class="icon-pencil icon-white"></i>&nbsp;Modifier</a></p>
+        {{#if isEdit}}
+            <p><a class="btn btn-success btn-mini" href="#" id="updatePlayersList"><i class="icon-pencil icon-white"></i>&nbsp;Update</a></p>
+        {{/if}}
     </div>
     <!--/span-->
 </template>

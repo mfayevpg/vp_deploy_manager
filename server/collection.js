@@ -6,7 +6,7 @@
 DeploymentList = new Meteor.Collection('deployments');
 
 Meteor.publish('deployment-list', function(){
-    return DeploymentList.find({}, {fields: {_id: 1, date: 1, status: 1}});
+    return DeploymentList.find({});
 });
 
 Meteor.publish('users', function(){

@@ -4,15 +4,17 @@
  * Time: 12:32
  */
 Meteor.methods({
-    createEmptyDeploy: function(){
+    createEmptyDeploy: function () {
         var self = this;
-
-        var emptyDeploy= {
+        var currentUser = Meteor.user();
+        var embeddedUser = _.pick(currentUser.profile,'avatar_url', 'name', 'html_url');
+        embeddedUser['_id'] = currentUser._id;
+        var emptyDeploy = {
             date: null,
-            status : 'edit',
+            status: 'edit',
             startDate: null,
             endDate: null,
-            playerList: [],
+            playerList: [embeddedUser],
             taskList: [],
             branchList: []
         };

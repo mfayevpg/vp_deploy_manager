@@ -34,7 +34,6 @@ function createEmpty(pageInvocation) {
 }
 
 function setCurrentDeploy(pageInvocation) {
-    console.log();
     var currentDeploy = DeploymentList.findOne({_id: pageInvocation.params._id});
     Session.set('currentDeploy', currentDeploy);
 }
