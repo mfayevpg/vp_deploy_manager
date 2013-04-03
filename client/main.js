@@ -120,11 +120,25 @@ Handlebars.registerHelper('isAdmin', function () {
 );
 
 function checkStatus(statusToCheck){
-    var currentDeploy = Session.get('currentDeploy');
     var out = false;
+    var currentDeploy = Session.get('currentDeploy');
     if(currentDeploy && currentDeploy._id){
         out = (currentDeploy.status == statusToCheck);
     }
+    return out;
+}
+
+function isPlayer(){
+    var out = false;
+    var currentDeploy = Session.get('currentDeploy');
+    if(currentDeploy && currentDeploy._id){
+        if(_.find(currentDeploy.playerList, function(player){
+            return (player._id == Meteor.userId());
+        })){
+            out = true;
+        }
+    }
+
     return out;
 }
 
@@ -140,5 +154,12 @@ Handlebars.registerHelper('isEdit', function () {
 
 Handlebars.registerHelper('isDone', function () {
         return checkStatus('done');
+    }
+);
+
+Handlebars.registerHelper('canUpdate', function () {
+        var out = (checkStatus('edit') && isPlayer());
+        out = (out || isAdmin());
+        return out;
     }
 );
