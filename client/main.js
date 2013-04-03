@@ -34,8 +34,7 @@ function createEmpty(pageInvocation) {
 }
 
 function setCurrentDeploy(pageInvocation) {
-    var currentDeploy = DeploymentList.findOne({_id: pageInvocation.params._id});
-    Session.set('currentDeploy', currentDeploy);
+    DeployHelper.setCurrentDeploy(DeploymentList.findOne({_id: pageInvocation.params._id}));
 }
 
 Meteor.autorun(function () {
@@ -121,8 +120,8 @@ Handlebars.registerHelper('isAdmin', function () {
 
 function checkStatus(statusToCheck){
     var out = false;
-    var currentDeploy = Session.get('currentDeploy');
-    if(currentDeploy && currentDeploy._id){
+    var currentDeploy = DeployHelper.getCurrentDeploy();
+    if(currentDeploy != null){
         out = (currentDeploy.status == statusToCheck);
     }
     return out;
@@ -130,8 +129,8 @@ function checkStatus(statusToCheck){
 
 function isPlayer(){
     var out = false;
-    var currentDeploy = Session.get('currentDeploy');
-    if(currentDeploy && currentDeploy._id){
+    var currentDeploy = DeployHelper.getCurrentDeploy();
+    if(currentDeploy != null){
         if(_.find(currentDeploy.playerList, function(player){
             return (player._id == Meteor.userId());
         })){
@@ -158,8 +157,12 @@ Handlebars.registerHelper('isDone', function () {
 );
 
 Handlebars.registerHelper('canUpdate', function () {
-        var out = (checkStatus('edit') && isPlayer());
-        out = (out || isCurrentUserAdmin());
+        var out = checkStatus('edit');
+        if(out){
+            out = (out && isPlayer());
+            out = (out || isCurrentUserAdmin());
+        }
+
         return out;
     }
 );

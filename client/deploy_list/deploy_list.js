@@ -24,9 +24,9 @@ Template.deploymentsList.helpers({
         return out;
     },
     isActiveDeployClass : function(){
-        var currentDeploy = Session.get('currentDeploy');
         var out = '';
-        if(currentDeploy && currentDeploy._id){
+        var currentDeploy = DeployHelper.getCurrentDeploy();
+        if(currentDeploy != null){
             if(currentDeploy._id == this._id){
                 out = 'active';
             }

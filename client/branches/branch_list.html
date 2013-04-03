@@ -1,0 +1,20 @@
+<template name="branchListDisplay">
+    <div class="span6">
+        <h4>Deployed branches</h4>
+        {{#if branchList}}
+        <table class="table">
+            {{#each branchList}}
+                <tr>
+                    <td>{{productName}}</td>
+                    <td>{{branchName}}</td>
+                </tr>
+            {{/each}}
+        </table>
+        {{/if}}
+        {{#if canUpdate}}
+            <p><a class="btn btn-success btn-mini" href="#"><i class="icon-pencil icon-white"></i>&nbsp;Update</a></p>
+        {{/if}}
+
+    </div>
+    <!--/span-->
+</template>

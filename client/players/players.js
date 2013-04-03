@@ -3,7 +3,7 @@
  * Date: 29/03/13
  * Time: 16:18
  */
-Template.playerList.rendered = function(){
+Template.playerListDisplay.rendered = function(){
     var $typeahead = $('.typeahead');
     if($typeahead.length > 0){
         $typeahead.typeahead({
@@ -13,7 +13,7 @@ Template.playerList.rendered = function(){
     }
 };
 
-Template.playerList.events({
+Template.playerListDisplay.events({
     'click a#updatePlayersList': function(event){
         event.preventDefault();
         console.log(event, this);
@@ -27,8 +27,8 @@ Template.playerList.events({
     'click [id*=removePlayer_]':function(event){
         event.preventDefault();
         var self = this;
-        var currentDeploy = Session.get('currentDeploy');
-        if(currentDeploy && currentDeploy._id){
+        var currentDeploy = DeployHelper.getCurrentDeploy();
+        if(currentDeploy != null){
             DeploymentList.find({_id: currentDeploy._id}).forEach(function(deploy){
                 var newPlayerList = _.reject(deploy.playerList, function(player){
                     return (player._id == self._id);
@@ -39,7 +39,7 @@ Template.playerList.events({
                         throw err;
                     }
                     currentDeploy.playerList = newPlayerList;
-                    Session.set('currentDeploy', currentDeploy);
+                    DeployHelper.setCurrentDeploy(currentDeploy);
                 });
 
             });
@@ -50,7 +50,7 @@ Template.playerList.events({
 function canUpdate() {
     return (Session.get(PlayersWidget.isUpdateSessionKey) && Handlebars._default_helpers.isEdit());
 }
-Template.playerList.helpers({
+Template.playerListDisplay.helpers({
     isUpdate: function(){
         return canUpdate();
     },
@@ -61,17 +61,11 @@ Template.playerList.helpers({
 
     playerList : function(){
         var out = null;
-        var currentDeploy = Session.get('currentDeploy');
-        if(currentDeploy){
+        var currentDeploy = DeployHelper.getCurrentDeploy();
+        if(currentDeploy != null){
             out = currentDeploy.playerList;
         }
 
         return out;
-    }
-});
-
-Meteor.methods({
-    checkForAvailablePlayers: function(query){
-
     }
 });

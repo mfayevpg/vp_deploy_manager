@@ -7,8 +7,8 @@ var PlayersWidget = {
     isUpdateSessionKey: 'isPlayerListUpdate',
     checkForAvailablePlayers: function(query, process){
         var out = [];
-        var currentDeploy = Session.get('currentDeploy');
-        if(currentDeploy && currentDeploy._id){
+        var currentDeploy = DeployHelper.getCurrentDeploy();
+        if(currentDeploy != null){
             var idList = _.pluck(currentDeploy.playerList, '_id');
             Meteor.users.find({_id : {$nin : idList}}).forEach(function(player){
                 var html = '<img src="' + player.profile.avatar_url + '" style="height: 32px; width: 32px" data-player="' + player._id + '" /> ' + player.profile.name;
@@ -19,9 +19,9 @@ var PlayersWidget = {
         return out;
     },
     updateCurrentPlayerList : function(selectedItem){
-        var addedUserId = $(selectedItem).data('player')
-        var currentDeploy = Session.get('currentDeploy');
-        if(currentDeploy && currentDeploy._id){
+        var addedUserId = $(selectedItem).data('player');
+        var currentDeploy = DeployHelper.getCurrentDeploy();
+        if(currentDeploy != null){
             var addedUser = Meteor.users.findOne({_id: addedUserId});
             var embeddedUser = _.pick(addedUser.profile,'avatar_url', 'name', 'html_url');
             embeddedUser['_id'] = addedUser._id;

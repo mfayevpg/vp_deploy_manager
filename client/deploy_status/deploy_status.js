@@ -5,10 +5,10 @@
  */
 Template.mepStatus.helpers({
     canDisplayStatus: function () {
-        var currentDeploy = Session.get('currentDeploy');
         var isUpdate = Session.get('isUpdateDeployStatus');
         var out = false;
-        if (currentDeploy) {
+        var currentDeploy = DeployHelper.getCurrentDeploy();
+        if(currentDeploy != null){
             out = (currentDeploy.date != null);
             out = (out && currentDeploy.status != '');
             if (typeof isUpdate != 'undefined') {
@@ -16,17 +16,6 @@ Template.mepStatus.helpers({
             }
         } else {
             out = true;
-        }
-
-        return out;
-    },
-    getLabelStatusClass: function () {
-        var currentDeploy = Session.get('currentDeploy');
-        var out = '';
-        if (currentDeploy == 'in_progress') {
-            out = 'label-warning';
-        } else if (currentDeploy == 'done') {
-            out = 'label-important';
         }
 
         return out;
@@ -41,9 +30,9 @@ Template.displayCurrentStatus.events({
 });
 
 function getLabelStatusClass() {
-    var currentDeploy = Session.get('currentDeploy');
     var out = '';
-    if (currentDeploy) {
+    var currentDeploy = DeployHelper.getCurrentDeploy();
+    if(currentDeploy != null){
         if (currentDeploy.status == 'in_progress') {
             out = 'label-warning';
         } else if (currentDeploy.status == 'done') {
@@ -55,9 +44,9 @@ function getLabelStatusClass() {
 }
 
 function getStatusLabel() {
-    var currentDeploy = Session.get('currentDeploy');
     var out = '';
-    if (currentDeploy) {
+    var currentDeploy = DeployHelper.getCurrentDeploy();
+    if(currentDeploy != null){
         if (currentDeploy.status == 'in_progress') {
             out = 'In Progress';
         } else if (currentDeploy.status == 'done') {
@@ -71,10 +60,10 @@ function getStatusLabel() {
 }
 
 function getCurrentDeployDate() {
-    var date2 = Session.get('currentDeploy');
     var out = '';
-    if (date2) {
-        out = date2.date;
+    var currentDeploy = DeployHelper.getCurrentDeploy();
+    if(currentDeploy != null){
+        out = currentDeploy.date;
     }
     return out;
 }
@@ -108,21 +97,21 @@ Template.editCurrentStatus.events({
         event.preventDefault();
         var $date = $('#currentDeployDate');
         if ($date.val() != '') {
-            var currentDeploy = Session.get('currentDeploy');
+            var currentDeploy = DeployHelper.getCurrentDeploy();
             currentDeploy.date = $date.val();
             DeploymentList.update({_id: currentDeploy._id}, {$set: {date: $date.val()}});
-            Session.set('currentDeploy', currentDeploy);
+            DeployHelper.setCurrentDeploy(currentDeploy);
+            Session.set('isUpdateDeployStatus', false);
         }
-        Session.set('isUpdateDeployStatus', false);
     }
 });
 
 function switchStatus(newStatus) {
-    var currentDeploy = Session.get('currentDeploy');
-    if (currentDeploy && currentDeploy._id) {
+    var currentDeploy = DeployHelper.getCurrentDeploy();
+    if(currentDeploy != null){
         currentDeploy.status = newStatus;
         DeploymentList.update({_id: currentDeploy._id}, {$set: {status: currentDeploy.status}});
-        Session.set('currentDeploy', currentDeploy);
+        DeployHelper.setCurrentDeploy(currentDeploy);
     }
 }
 
@@ -146,15 +135,14 @@ Template.modalRemovalConfirmation.helpers({
 Template.modalRemovalConfirmation.events({
     'click #deleteDeploy': function (event) {
         event.preventDefault();
-        var currentDeploy = Session.get('currentDeploy');
-        if (currentDeploy && currentDeploy._id) {
+        var currentDeploy = DeployHelper.getCurrentDeploy();
+        if(currentDeploy != null){
             $('#myModal').modal('hide');
             DeploymentList.remove({_id: currentDeploy._id}, function (err) {
                 if (err) {
                     throw err;
                 }
-                Session.set('confirmationAskedForRemoval', null);
-                Session.set('currentDeploy', null);
+                DeployHelper.setCurrentDeploy(null);
             });
         }
     }
