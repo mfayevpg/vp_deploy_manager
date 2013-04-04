@@ -166,3 +166,36 @@ Handlebars.registerHelper('canUpdate', function () {
         return out;
     }
 );
+
+Template.mainDisplay.events({
+    'click a#toggleResize':function(event){
+        event.preventDefault();
+        console.log('toto');
+        DeployHelper.toggleFullscreen();
+    }
+});
+
+Template.mainDisplay.helpers({
+    handleFullscreen: function(divId){
+        var $currentDiv = $('#' + divId);
+        if($currentDiv.length > 0){
+            if(DeployHelper.isFullscreen()){
+                if(divId == 'divDeployList'){
+                    $currentDiv.hide();
+                    console.log('hide');
+                }
+//                else if(divId == 'divMainDisplay'){
+//                    $currentDiv.attr('class', 'span12');
+//                }
+            }else{
+                if(divId == 'divDeployList'){
+                    console.log('show');
+                    $currentDiv.show();
+                }
+//                else if(divId == 'divMainDisplay'){
+//                    $currentDiv.attr('class', 'span10');
+//                }
+            }
+        }
+    }
+});
