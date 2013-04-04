@@ -1,18 +1,41 @@
 <template name="branchListDisplay">
     <div class="span6">
         <h4>Deployed branches</h4>
-        {{#if branchList}}
         <table class="table">
             {{#each branchList}}
                 <tr>
-                    <td>{{productName}}</td>
+                    <td>{{product}}</td>
                     <td>{{branchName}}</td>
+                    {{#if isUpdate}}
+                        <td>
+                            <a href="#" class="btn btn-mini removeBranchFromList">
+                                <i class="icon-remove-sign"></i>
+                            </a>
+                        </td>
+                    {{/if}}
                 </tr>
             {{/each}}
+            {{#if isUpdate}}
+                <tr>
+                    <td colspan="3">
+                        <select class="span3" style="margin-bottom: 0px" id="selectProduct">
+                            <option value="">Select a product</option>
+                            <option value="Bong">Bong</option>
+                            <option value="Ozone">Ozone</option>
+                            <option value="Oxybong">Oxybong</option>
+                            <option value="MemberMid">MemberMid</option>
+                            <option value="MobMid">MobMid</option>
+                        </select>
+                        <input type="text" class="span3" id="branchName" style="margin-bottom: 0px"/>
+                        <a href="#" class="btn" id="addBranch">
+                            <i class="icon-plus-sign"></i>
+                        </a>
+                    </td>
+                </tr>
+            {{/if}}
         </table>
-        {{/if}}
         {{#if canUpdate}}
-            <p><a class="btn btn-success btn-mini" href="#"><i class="icon-pencil icon-white"></i>&nbsp;Update</a></p>
+            <p><a class="btn btn-success btn-mini" href="#" id="toggleUpdateMode"><i class="icon-pencil icon-white"></i>&nbsp;Update</a></p>
         {{/if}}
 
     </div>
