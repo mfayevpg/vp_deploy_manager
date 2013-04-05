@@ -8,7 +8,7 @@ Meteor.pages({
     '/': {to: 'mainDisplay', before: isLoggedIn, layout: 'loggedLayout'},
     '/deploy/new': {to: 'mainDisplay', as: 'newDeploy', before: [isLoggedIn, createEmpty], layout: 'loggedLayout'},
     '/deploy/edit/:_id': {to: 'mainDisplay', as: 'editDeploy', before: [isLoggedIn, setCurrentDeploy], layout: 'loggedLayout'},
-    '/admin':{to:'userListDisplay', before:[isLoggedIn, isCurrentUserAdmin], layout: 'loggedLayout'}
+    '/admin': {to: 'userListDisplay', before: [isLoggedIn, isCurrentUserAdmin], layout: 'loggedLayout'}
 }, {
     defaults: {
         layout: 'notLoggedLayout'
@@ -97,7 +97,7 @@ Template.timezoneDisplay.rendered = function () {
     }
 };
 
-function isCurrentUserAdmin(pageInvocation){
+function isCurrentUserAdmin(pageInvocation) {
     var out = false;
     if (Meteor.userId()) {
         var count = Meteor.users.find({$and: [
@@ -106,7 +106,7 @@ function isCurrentUserAdmin(pageInvocation){
         ] }).count();
         out = (count == 1);
     }
-    if(pageInvocation && !out){
+    if (pageInvocation && !out) {
         pageInvocation.redirect(Meteor.mainDisplayPath());
     }
 
@@ -118,22 +118,22 @@ Handlebars.registerHelper('isAdmin', function () {
     }
 );
 
-function checkStatus(statusToCheck){
+function checkStatus(statusToCheck) {
     var out = false;
     var currentDeploy = DeployHelper.getCurrentDeploy();
-    if(currentDeploy != null){
+    if (currentDeploy != null) {
         out = (currentDeploy.status == statusToCheck);
     }
     return out;
 }
 
-function isPlayer(){
+function isPlayer() {
     var out = false;
     var currentDeploy = DeployHelper.getCurrentDeploy();
-    if(currentDeploy != null){
-        if(_.find(currentDeploy.playerList, function(player){
+    if (currentDeploy != null) {
+        if (_.find(currentDeploy.playerList, function (player) {
             return (player._id == Meteor.userId());
-        })){
+        })) {
             out = true;
         }
     }
@@ -158,7 +158,7 @@ Handlebars.registerHelper('isDone', function () {
 
 Handlebars.registerHelper('canUpdate', function () {
         var out = checkStatus('edit');
-        if(out){
+        if (out) {
             out = (out && isPlayer());
             out = (out || isCurrentUserAdmin());
         }
@@ -167,35 +167,40 @@ Handlebars.registerHelper('canUpdate', function () {
     }
 );
 
-Template.mainDisplay.events({
-    'click a#toggleResize':function(event){
-        event.preventDefault();
-        console.log('toto');
-        DeployHelper.toggleFullscreen();
+Template.mainDisplay.helpers({
+    resizeIcon: function(p_inverse){
+        var out = 'full';
+        var isInverse = (typeof p_inverse != 'undefined' && p_inverse != null && p_inverse == 'inverse');
+        if(isInverse){
+            out = 'small';
+        }
+
+        if(DeployHelper.isFullscreen()){
+            out = 'small';
+            if(isInverse){
+                out = 'full';
+            }
+        }
+        return out;
     }
 });
 
-Template.mainDisplay.helpers({
-    handleFullscreen: function(divId){
-        var $currentDiv = $('#' + divId);
-        if($currentDiv.length > 0){
-            if(DeployHelper.isFullscreen()){
-                if(divId == 'divDeployList'){
-                    $currentDiv.hide();
-                    console.log('hide');
-                }
-//                else if(divId == 'divMainDisplay'){
-//                    $currentDiv.attr('class', 'span12');
-//                }
-            }else{
-                if(divId == 'divDeployList'){
-                    console.log('show');
-                    $currentDiv.show();
-                }
-//                else if(divId == 'divMainDisplay'){
-//                    $currentDiv.attr('class', 'span10');
-//                }
-            }
+Template.mainDisplay.events({
+    'click a#toggleResize': function (event) {
+        event.preventDefault();
+        DeployHelper.toggleFullscreen();
+        var $mainDiv = $('#divMainDisplay');
+        var $sideBar = $('#divDeployList');
+        if (DeployHelper.isFullscreen()) {
+            $sideBar.hide(400, function(){
+                $sideBar.removeClass('span2');
+                $mainDiv.removeClass('span10');
+            });
+        } else {
+            $sideBar.show(400, function(){
+                $sideBar.addClass('span2');
+                $mainDiv.addClass('span10');
+            });
         }
     }
 });

@@ -5,7 +5,11 @@
  */
 Template.deploymentsList.helpers({
     list : function(){
-        return DeploymentList.find({date: {$ne: null}});
+        var out = null;
+        if(!DeployHelper.isFullscreen()){
+            out = DeploymentList.find({date: {$ne: null}});
+        }
+        return out;
     },
     badgeClassDeploy: function(){
         var out = 'badge ';
@@ -33,5 +37,10 @@ Template.deploymentsList.helpers({
         }
 
         return out;
+    },
+    displayNewButton: function(){
+        var out = Handlebars._default_helpers.isAdmin();
+
+        return (out && !DeployHelper.isFullscreen());
     }
 });
