@@ -5,9 +5,19 @@
  */
 Template.taskListDisplay.helpers({
     taskList: function(){
-        var taskToDisplay = TaskList.find({});
-        DeployHelper.setTaskListMinAndMaxPosition(taskToDisplay);
-        return  taskToDisplay;
+        return  TaskList.find({});
+    },
+    isUpdate: function() {
+        console.log(DeployHelper.getTaskListUpdateState());
+        return DeployHelper.getTaskListUpdateState();
+    }
+});
+
+Template.taskListDisplay.events({
+    'click a#updateTaskList': function(event){
+        event.preventDefault();
+        console.log('TOTO');
+        DeployHelper.toggleTaskListUpdateState();
     }
 });
 

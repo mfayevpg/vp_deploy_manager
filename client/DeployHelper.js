@@ -7,6 +7,7 @@ var DeployHelper = {
     currentDeployKey : 'currentDeploy',
     branchListUpdateKey: 'branchListUpdate',
     isFullscreenKey: 'isFullscreen',
+    taskListUpdateKey: 'taskListUpdate',
     getCurrentDeploy: function(){
         var currentDeploy = Session.get(DeployHelper.currentDeployKey);
         var out = null;
@@ -21,18 +22,15 @@ var DeployHelper = {
     },
 
     toggleBranchListUpdateState: function(){
-        var currentState = Session.get(this.branchListUpdateKey);
-        if(typeof currentState != 'undefined' && currentState != null){
-            currentState = !currentState;
-        }else{
-            currentState = true;
-        }
-        Session.set(this.branchListUpdateKey, currentState);
+        this.toggleSessionValue(this.branchListUpdateKey);
     },
 
     getBranchListUpdateState:function(){
+        return this.getSessionVar(this.branchListUpdateKey);
+    },
+    getSessionVar: function(key){
         var out = null;
-        var value = Session.get(this.branchListUpdateKey);
+        var value = Session.get(key);
         if(typeof value != 'undefined' && value != null){
             out = value;
         }
@@ -40,26 +38,30 @@ var DeployHelper = {
         return out;
     },
     toggleFullscreen: function(){
-        var value = Session.get(this.isFullscreenKey);
+        this.toggleSessionValue(this.isFullscreenKey);
+    },
+    toggleSessionValue: function(key){
+        var value = Session.get(key);
         var out = true;
         if(typeof value != 'undefined' && value != null){
             out = !value;
         }
-        Session.set(this.isFullscreenKey, out);
+        console.log('Set value for [' + key + ']', out);
+        Session.set(key, out);
     },
     isFullscreen: function(){
-        var value = Session.get(this.isFullscreenKey);
-        var out = false;
-        if(typeof value != 'undefined' && value != null){
-            out = value;
-        }
-
-        return out;
+        return this.getSessionVar(this.isFullscreenKey);
     },
     setTaskListMinAndMaxPosition: function(taskListCursor){
         var positionList = [];
         taskListCursor.forEach(function(task){
             positionList.push(task.position);
         });
+    },
+    getTaskListUpdateState: function(){
+        return this.getSessionVar(this.taskListUpdateKey);
+    },
+    toggleTaskListUpdateState : function(){
+        this.toggleSessionValue(this.taskListUpdateKey);
     }
 };

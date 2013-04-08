@@ -1,4 +1,7 @@
 <template name="taskListDisplay">
+  {{#if canUpdate}}
+  <a href="#" class="btn btn-success btn-mini" id="updateTaskList"><i class="icon-pencil icon-white"></i> Update</a>
+  {{/if}}
 <table class="table">
     <thead>
     <tr>
@@ -13,11 +16,16 @@
     </tr>
     </thead>
     <tbody>
-    {{#each taskList}}
-        <tr>
-            {{> taskDetailDisplay}}
-        </tr>
-    {{/each}}
+      {{#each taskList}}
+      <tr>
+        {{> taskDetailDisplay}}
+      </tr>
+      {{/each}}
+      {{#if isUpdate}}
+      <tr>
+        {{> taskForm}}
+      </tr>
+      {{/if}}
     <tr>
 
     </tr>
@@ -105,7 +113,8 @@
     <thead>
     <tr>
         <th><a href="#"><i class="icon-arrow-up"></i></a></th>
-        <th>IT - UK - BR &nbsp; <a class="btn btn-success btn-mini" href="#"><i class="icon-pencil icon-white"></i>&nbsp;Modifier</a></th>
+        <th>IT - UK - BR &nbsp; <a class="btn btn-success btn-mini" href="#"><i class="icon-pencil icon-white"></i>&nbsp;Modifier</a>
+        </th>
         <th>Commencé à / Par</th>
         <th>Terminé à / Par</th>
         <th>&nbsp;</th>
@@ -243,30 +252,64 @@
 </template>
 
 <template name="taskDetailDisplay">
-        <td>
-            {{#if canGoDown}}
-                <a href="#"><i class="icon-arrow-down"></i></a>
-            {{/if}}
-            {{#if canGoUp}}
-                <a href="#"><i class="icon-arrow-up"></i></a>
-            {{/if}}
-        </td>
-        <td>
-            <pre>crontab -e (*/5 * * * * sh /web/git/scripts/replic_xapian.sh bu)</pre>
-            <a href="" class="btn btn-info btn-mini">Activer</a>
-            <a href="" class="btn btn-warning btn-mini disabled">Annuler</a>
-            <a href="" class="btn btn-danger btn-mini disabled">Terminer</a>
-        </td>
-        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
-                       target="_blank">
-            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
-        </a>
-        </td>
-        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
-                       target="_blank">
-            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
-        </a></td>
-        <td>
-            <a href="#" class="btn btn-mini"><i class="icon-remove"></i></a>
-        </td>
+    <td>
+      {{#if canGoDown}}
+          <a href="#"><i class="icon-arrow-down"></i></a>
+      {{/if}}
+      {{#if canGoUp}}
+          <a href="#"><i class="icon-arrow-up"></i></a>
+      {{/if}}
+    </td>
+    <td>
+        <pre>crontab -e (*/5 * * * * sh /web/git/scripts/replic_xapian.sh bu)</pre>
+        <a href="" class="btn btn-info btn-mini">Activer</a>
+        <a href="" class="btn btn-warning btn-mini disabled">Annuler</a>
+        <a href="" class="btn btn-danger btn-mini disabled">Terminer</a>
+    </td>
+    <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
+                   target="_blank">
+        <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+    </a>
+    </td>
+    <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
+                   target="_blank">
+        <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+    </a></td>
+    <td>
+        <a href="#" class="btn btn-mini"><i class="icon-remove"></i></a>
+    </td>
+</template>
+
+<template name="taskForm">
+    <td colspan="7">
+        <form class="form-inline">
+            <label class="checkbox"><input type="checkbox" > Seperator</label>
+            <select class="input-small" id="productName">
+                <option>Select</option>
+                <option>Bong</option>
+                <option>Ozone</option>
+                <option>Oxy</option>
+                <option>MobMid</option>
+                <option>MemberMid</option>
+            </select>
+            BU :
+            <label class="checkbox"><input type="checkbox"> BR</label>
+            <label class="checkbox"><input type="checkbox"> ES</label>
+            <label class="checkbox"><input type="checkbox"> FR</label>
+            <label class="checkbox"><input type="checkbox"> IT</label>
+            <label class="checkbox"><input type="checkbox"> PL</label>
+            <label class="checkbox"><input type="checkbox"> UK</label>
+            Description : <textarea class="input-medium"></textarea>
+            <input type="text" placeholder="Command" class="input-xxlarge">
+            <select class="input-small">
+                <option>Select</option>
+                <option>vp-calculator01</option>
+                <option>vp-calculator02</option>
+                <option>vp-calculator03</option>
+                <option>vp-calculator04</option>
+                <option>vp-calculator05</option>
+                <option>vp-calculator06</option>
+            </select>
+        </form>
+    </td>
 </template>
