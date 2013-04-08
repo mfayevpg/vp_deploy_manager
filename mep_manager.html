@@ -58,16 +58,18 @@
 <template name="mainDisplay">
     <div class="container-fluid">
         <div class="row-fluid">
-            <div class="sidebar-{{resizeIcon 'inverse'}}" id="divDeployList">
-                {{> deploymentsList}}
-            </div>
+            {{#unless isFullscreen}}
+                <div class="span2" id="divDeployList">
+                    {{> deploymentsList}}
+                </div>
+            {{/unless}}
             <!--/span-->
             {{#if currentDeploy}}
 
-                <div class="span10" id="divMainDisplay">
+                <div class="{{mainDisplayStyle}}" id="divMainDisplay">
                     <div class="row-fluid">
                         {{> mepStatus}}
-                        <div class="span1 offset2 text-right">
+                        <div class="pull-right">
                             <a href="#" id="toggleResize"><i class="icon-resize-{{resizeIcon}}"></i></a>
                         </div>
                     </div>

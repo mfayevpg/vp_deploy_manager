@@ -168,39 +168,30 @@ Handlebars.registerHelper('canUpdate', function () {
 );
 
 Template.mainDisplay.helpers({
-    resizeIcon: function(p_inverse){
+    resizeIcon: function(){
         var out = 'full';
-        var isInverse = (typeof p_inverse != 'undefined' && p_inverse != null && p_inverse == 'inverse');
-        if(isInverse){
-            out = 'small';
-        }
 
         if(DeployHelper.isFullscreen()){
             out = 'small';
-            if(isInverse){
-                out = 'full';
-            }
         }
         return out;
+    },
+    mainDisplayStyle: function(){
+        var out = 'span10';
+        if(DeployHelper.isFullscreen()){
+            out = 'span12';
+        }
+        return out;
+    },
+    isFullscreen: function(){
+        return DeployHelper.isFullscreen();
     }
+
 });
 
 Template.mainDisplay.events({
     'click a#toggleResize': function (event) {
         event.preventDefault();
         DeployHelper.toggleFullscreen();
-        var $mainDiv = $('#divMainDisplay');
-        var $sideBar = $('#divDeployList');
-        if (DeployHelper.isFullscreen()) {
-            $sideBar.hide(400, function(){
-                $sideBar.removeClass('span2');
-                $mainDiv.removeClass('span10');
-            });
-        } else {
-            $sideBar.show(400, function(){
-                $sideBar.addClass('span2');
-                $mainDiv.addClass('span10');
-            });
-        }
     }
 });

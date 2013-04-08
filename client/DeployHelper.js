@@ -45,7 +45,6 @@ var DeployHelper = {
         if(typeof value != 'undefined' && value != null){
             out = !value;
         }
-        console.log(out);
         Session.set(this.isFullscreenKey, out);
     },
     isFullscreen: function(){
@@ -54,7 +53,6 @@ var DeployHelper = {
         if(typeof value != 'undefined' && value != null){
             out = value;
         }
-        console.log(out);
 
         return out;
     }
