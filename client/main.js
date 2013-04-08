@@ -97,76 +97,6 @@ Template.timezoneDisplay.rendered = function () {
     }
 };
 
-function isCurrentUserAdmin(pageInvocation) {
-    var out = false;
-    if (Meteor.userId()) {
-        var count = Meteor.users.find({$and: [
-            {isAdmin: true},
-            {_id: Meteor.userId()}
-        ] }).count();
-        out = (count == 1);
-    }
-    if (pageInvocation && !out) {
-        pageInvocation.redirect(Meteor.mainDisplayPath());
-    }
-
-    return out;
-}
-
-Handlebars.registerHelper('isAdmin', function () {
-        return isCurrentUserAdmin();
-    }
-);
-
-function checkStatus(statusToCheck) {
-    var out = false;
-    var currentDeploy = DeployHelper.getCurrentDeploy();
-    if (currentDeploy != null) {
-        out = (currentDeploy.status == statusToCheck);
-    }
-    return out;
-}
-
-function isPlayer() {
-    var out = false;
-    var currentDeploy = DeployHelper.getCurrentDeploy();
-    if (currentDeploy != null) {
-        if (_.find(currentDeploy.playerList, function (player) {
-            return (player._id == Meteor.userId());
-        })) {
-            out = true;
-        }
-    }
-
-    return out;
-}
-
-Handlebars.registerHelper('isInProgress', function () {
-        return checkStatus('in_progress');
-    }
-);
-
-Handlebars.registerHelper('isEdit', function () {
-        return checkStatus('edit');
-    }
-);
-
-Handlebars.registerHelper('isDone', function () {
-        return checkStatus('done');
-    }
-);
-
-Handlebars.registerHelper('canUpdate', function () {
-        var out = checkStatus('edit');
-        if (out) {
-            out = (out && isPlayer());
-            out = (out || isCurrentUserAdmin());
-        }
-
-        return out;
-    }
-);
-
 Template.mainDisplay.helpers({
     resizeIcon: function(){
         var out = 'full';
@@ -195,3 +125,42 @@ Template.mainDisplay.events({
         DeployHelper.toggleFullscreen();
     }
 });
+
+function isCurrentUserAdmin(pageInvocation) {
+    var out = false;
+    if (Meteor.userId()) {
+        var count = Meteor.users.find({$and: [
+            {isAdmin: true},
+            {_id: Meteor.userId()}
+        ] }).count();
+        out = (count == 1);
+    }
+    if (pageInvocation && !out) {
+        pageInvocation.redirect(Meteor.mainDisplayPath());
+    }
+
+    return out;
+}
+
+function checkStatus(statusToCheck) {
+    var out = false;
+    var currentDeploy = DeployHelper.getCurrentDeploy();
+    if (currentDeploy != null) {
+        out = (currentDeploy.status == statusToCheck);
+    }
+    return out;
+}
+
+function isPlayer() {
+    var out = false;
+    var currentDeploy = DeployHelper.getCurrentDeploy();
+    if (currentDeploy != null) {
+        if (_.find(currentDeploy.playerList, function (player) {
+            return (player._id == Meteor.userId());
+        })) {
+            out = true;
+        }
+    }
+
+    return out;
+}

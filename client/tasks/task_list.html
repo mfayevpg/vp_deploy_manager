@@ -1,61 +1,25 @@
-<template name="taskList">
+<template name="taskListDisplay">
 <table class="table">
     <thead>
     <tr>
-        <th><a href="#"><i class="icon-arrow-down"></i></a></th>
-        <th>FR - ES &nbsp; <a class="btn btn-success btn-mini" href="#"><i class="icon-pencil icon-white"></i>&nbsp;Modifier</a></th>
-        <th>Commencé à / Par</th>
-        <th>Terminé à / Par</th>
+        <th>&nbsp;</th>
+        <th>Product</th>
+        <th>BU</th>
+        <th>Description</th>
+        <th>Command</th>
+        <th>Server</th>
+        <th>Execution time</th>
         <th>&nbsp;</th>
     </tr>
     </thead>
     <tbody>
+    {{#each taskList}}
+        <tr>
+            {{> taskDetailDisplay}}
+        </tr>
+    {{/each}}
     <tr>
-        <td>
-            <a href="#"><i class="icon-arrow-down"></i></a>
-        </td>
-        <td>
-            <pre>crontab -e (*/5 * * * * sh /web/git/scripts/replic_xapian.sh bu)</pre>
-            <a href="" class="btn btn-info btn-mini">Activer</a>
-            <a href="" class="btn btn-warning btn-mini disabled">Annuler</a>
-            <a href="" class="btn btn-danger btn-mini disabled">Terminer</a>
-        </td>
-        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
-                       target="_blank">
-            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
-        </a>
-        </td>
-        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
-                       target="_blank">
-            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
-        </a></td>
-        <td>
-            <a href="#" class="btn btn-mini"><i class="icon-remove"></i></a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <a href="#"><i class="icon-arrow-down"></i></a>
-            <a href="#"><i class="icon-arrow-up"></i></a>
-        </td>
-        <td>
-            <pre>crontab -e (*/5 * * * * sh /web/git/scripts/replic_xapian.sh bu)</pre>
-            <a href="" class="btn btn-info btn-mini">Activer</a>
-            <a href="" class="btn btn-warning btn-mini disabled">Annuler</a>
-            <a href="" class="btn btn-danger btn-mini disabled">Terminer</a>
-        </td>
-        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
-                       target="_blank">
-            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
-        </a>
-        </td>
-        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
-                       target="_blank">
-            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
-        </a></td>
-        <td>
-            <a href="#" class="btn btn-mini"><i class="icon-remove"></i></a>
-        </td>
+
     </tr>
     <tr>
         <td>
@@ -276,4 +240,33 @@
     </tbody>
 </table>
 <p><a href="" class="btn btn-small"><i class="icon-plus"></i>Ajouter un Pays</a></p>
+</template>
+
+<template name="taskDetailDisplay">
+        <td>
+            {{#if canGoDown}}
+                <a href="#"><i class="icon-arrow-down"></i></a>
+            {{/if}}
+            {{#if canGoUp}}
+                <a href="#"><i class="icon-arrow-up"></i></a>
+            {{/if}}
+        </td>
+        <td>
+            <pre>crontab -e (*/5 * * * * sh /web/git/scripts/replic_xapian.sh bu)</pre>
+            <a href="" class="btn btn-info btn-mini">Activer</a>
+            <a href="" class="btn btn-warning btn-mini disabled">Annuler</a>
+            <a href="" class="btn btn-danger btn-mini disabled">Terminer</a>
+        </td>
+        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
+                       target="_blank">
+            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+        </a>
+        </td>
+        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
+                       target="_blank">
+            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
+        </a></td>
+        <td>
+            <a href="#" class="btn btn-mini"><i class="icon-remove"></i></a>
+        </td>
 </template>

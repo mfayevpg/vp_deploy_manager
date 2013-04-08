@@ -55,5 +55,11 @@ var DeployHelper = {
         }
 
         return out;
+    },
+    setTaskListMinAndMaxPosition: function(taskListCursor){
+        var positionList = [];
+        taskListCursor.forEach(function(task){
+            positionList.push(task.position);
+        });
     }
 };

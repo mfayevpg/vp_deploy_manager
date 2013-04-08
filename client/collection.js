@@ -5,11 +5,15 @@
  */
 
 DeploymentList = new Meteor.Collection('deployments');
+TaskList = new Meteor.Collection('tasks');
 
-Meteor.subscribe('deployment-list', function(){
-    console.log('deployment-list Done');
-});
+Meteor.subscribe('deployment-list');
 
-Meteor.subscribe('users', function(){
-    console.log('users Done');
+Meteor.subscribe('users');
+
+Meteor.autorun(function(){
+    var currentDeploy = DeployHelper.getCurrentDeploy();
+    if(currentDeploy != null){
+        Meteor.subscribe('current-tasks', currentDeploy._id);
+    }
 });

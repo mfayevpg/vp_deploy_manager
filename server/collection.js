@@ -4,6 +4,11 @@
  * Time: 18:26
  */
 DeploymentList = new Meteor.Collection('deployments');
+TaskList = new Meteor.Collection('tasks');
+
+function isAdmin(userId){
+    return (Meteor.users.find({_id: userId}).count() == 1);
+}
 
 Meteor.publish('deployment-list', function(){
     return DeploymentList.find({});
@@ -13,9 +18,9 @@ Meteor.publish('users', function(){
     return Meteor.users.find({});
 });
 
-function isAdmin(userId){
-    return (Meteor.users.find({_id: userId}).count() == 1);
-}
+Meteor.publish('current-tasks', function(deploymentId){
+    return TaskList.find({'deploymentId': deploymentId});
+});
 
 Meteor.users.allow({
     update: function(userId, doc, fieldNames, modifier){
