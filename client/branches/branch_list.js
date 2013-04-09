@@ -14,7 +14,7 @@ Template.branchListDisplay.helpers({
         return out;
     },
     isUpdate: function(){
-        return DeployHelper.getBranchListUpdateState();
+        return (DeployHelper.getBranchListUpdateState() && Handlebars._default_helpers.canUpdate());
     }
 });
 

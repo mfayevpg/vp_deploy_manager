@@ -16,13 +16,7 @@ Template.playerListDisplay.rendered = function(){
 Template.playerListDisplay.events({
     'click a#updatePlayersList': function(event){
         event.preventDefault();
-        console.log(event, this);
-        var isUpdate = Session.get(PlayersWidget.isUpdateSessionKey);
-        if(!isUpdate || isUpdate == ''){
-            Session.set(PlayersWidget.isUpdateSessionKey, true);
-        }else{
-            Session.set(PlayersWidget.isUpdateSessionKey, false);
-        }
+        DeployHelper.togglePlayerListUpdateState();
     },
     'click [id*=removePlayer_]':function(event){
         event.preventDefault();
@@ -48,7 +42,7 @@ Template.playerListDisplay.events({
 });
 
 function canUpdate() {
-    return (Session.get(PlayersWidget.isUpdateSessionKey) && Handlebars._default_helpers.isEdit());
+    return (DeployHelper.getPlayerListUpdateState() && Handlebars._default_helpers.canUpdate());
 }
 Template.playerListDisplay.helpers({
     isUpdate: function(){

@@ -8,6 +8,7 @@ var DeployHelper = {
     branchListUpdateKey: 'branchListUpdate',
     isFullscreenKey: 'isFullscreen',
     taskListUpdateKey: 'taskListUpdate',
+    playerListUpdateKey: 'playerListUpdate',
     getCurrentDeploy: function(){
         var currentDeploy = Session.get(DeployHelper.currentDeployKey);
         var out = null;
@@ -63,5 +64,11 @@ var DeployHelper = {
     },
     toggleTaskListUpdateState : function(){
         this.toggleSessionValue(this.taskListUpdateKey);
+    },
+    getPlayerListUpdateState: function(){
+        return this.getSessionVar(this.playerListUpdateKey);
+    },
+    togglePlayerListUpdateState: function(){
+        this.toggleSessionValue(this.playerListUpdateKey);
     }
 };

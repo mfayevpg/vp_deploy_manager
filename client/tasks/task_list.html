@@ -1,7 +1,7 @@
 <template name="taskListDisplay">
-  {{#if canUpdate}}
-  <a href="#" class="btn btn-success btn-mini" id="updateTaskList"><i class="icon-pencil icon-white"></i> Update</a>
-  {{/if}}
+    {{#if canUpdate}}
+    <a href="#" class="btn btn-success btn-mini" id="updateTaskList"><i class="icon-pencil icon-white"></i> Update</a>
+    {{/if}}
 <table class="table">
     <thead>
     <tr>
@@ -16,16 +16,16 @@
     </tr>
     </thead>
     <tbody>
-      {{#each taskList}}
-      <tr>
-        {{> taskDetailDisplay}}
-      </tr>
-      {{/each}}
-      {{#if isUpdate}}
-      <tr>
-        {{> taskForm}}
-      </tr>
-      {{/if}}
+        {{#each taskList}}
+        <tr>
+            {{> taskDetailDisplay}}
+        </tr>
+        {{/each}}
+        {{#if isUpdate}}
+        <tr>
+            {{> taskForm}}
+        </tr>
+        {{/if}}
     <tr>
 
     </tr>
@@ -253,12 +253,12 @@
 
 <template name="taskDetailDisplay">
     <td>
-      {{#if canGoDown}}
-          <a href="#"><i class="icon-arrow-down"></i></a>
-      {{/if}}
-      {{#if canGoUp}}
-          <a href="#"><i class="icon-arrow-up"></i></a>
-      {{/if}}
+        {{#if canGoDown}}
+            <a href="#"><i class="icon-arrow-down"></i></a>
+        {{/if}}
+        {{#if canGoUp}}
+            <a href="#"><i class="icon-arrow-up"></i></a>
+        {{/if}}
     </td>
     <td>
         <pre>crontab -e (*/5 * * * * sh /web/git/scripts/replic_xapian.sh bu)</pre>
@@ -282,34 +282,69 @@
 
 <template name="taskForm">
     <td colspan="7">
-        <form class="form-inline">
-            <label class="checkbox"><input type="checkbox" > Seperator</label>
-            <select class="input-small" id="productName">
-                <option>Select</option>
-                <option>Bong</option>
-                <option>Ozone</option>
-                <option>Oxy</option>
-                <option>MobMid</option>
-                <option>MemberMid</option>
-            </select>
-            BU :
-            <label class="checkbox"><input type="checkbox"> BR</label>
-            <label class="checkbox"><input type="checkbox"> ES</label>
-            <label class="checkbox"><input type="checkbox"> FR</label>
-            <label class="checkbox"><input type="checkbox"> IT</label>
-            <label class="checkbox"><input type="checkbox"> PL</label>
-            <label class="checkbox"><input type="checkbox"> UK</label>
-            Description : <textarea class="input-medium"></textarea>
-            <input type="text" placeholder="Command" class="input-xxlarge">
-            <select class="input-small">
-                <option>Select</option>
-                <option>vp-calculator01</option>
-                <option>vp-calculator02</option>
-                <option>vp-calculator03</option>
-                <option>vp-calculator04</option>
-                <option>vp-calculator05</option>
-                <option>vp-calculator06</option>
-            </select>
+        <form class="form-horizontal">
+            <div class="control-group">
+                <div class="controls">
+                    <label class="checkbox"><input type="checkbox" id="separator"> Separator</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <label class="control-label">Product Name</label>
+                    <select class="input-small" id="productName">
+                        <option value="">Select</option>
+                        <option>Bong</option>
+                        <option>Ozone</option>
+                        <option>Oxy</option>
+                        <option>MobMid</option>
+                        <option>MemberMid</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <label class="checkbox inline"><input id="bu_BR" value="br" type="checkbox"> BR</label>
+                    <label class="checkbox inline"><input id="bu_ES" value="es" type="checkbox"> ES</label>
+                    <label class="checkbox inline"><input id="bu_FR" value="fr" type="checkbox"> FR</label>
+                    <label class="checkbox inline"><input id="bu_IT" value="it" type="checkbox"> IT</label>
+                    <label class="checkbox inline"><input id="bu_PL" value="pl" type="checkbox"> PL</label>
+                    <label class="checkbox inline"><input id="bu_UK" value="uk" type="checkbox"> UK</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <label class="control-label">Description</label>
+                    <textarea class="input-medium" id="description"></textarea>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="controls">
+                    <label class="control-label">Command</label>
+                    <input type="text" placeholder="Command" class="input-xxlarge" id="command">
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <label class="control-label">Server</label>
+                    <select class="input-small" id="server">
+                        <option value="">Select</option>
+                        <option>vp-calculator01</option>
+                        <option>vp-calculator02</option>
+                        <option>vp-calculator03</option>
+                        <option>vp-calculator04</option>
+                        <option>vp-calculator05</option>
+                        <option>vp-calculator06</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <a href="#" class="btn" id="addTask">
+                        <i class="icon-plus-sign"></i>Ajouter
+                    </a>
+                </div>
+            </div>
         </form>
     </td>
 </template>

@@ -4,7 +4,6 @@
  * Time: 16:22
  */
 var PlayersWidget = {
-    isUpdateSessionKey: 'isPlayerListUpdate',
     checkForAvailablePlayers: function(query, process){
         var out = [];
         var currentDeploy = DeployHelper.getCurrentDeploy();
