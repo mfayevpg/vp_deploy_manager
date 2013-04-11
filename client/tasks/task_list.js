@@ -57,7 +57,26 @@ Template.taskForm.rendered = function(){
 Template.taskForm.events({
     'click a#addTask': function(event){
         event.preventDefault();
-        console.log('TOTO');
+        var currentDeploy = DeployHelper.getCurrentDeploy();
+        if(currentDeploy != null){
+            var taskForm = new TaskForm(currentDeploy);
+            if(taskForm.isValid()){
+                var taskDocument = new TaskDocument();
+                taskDocument.fromForm(taskForm.getObject());
+                TaskList.insert(taskDocument.toDocument(), function(error, insertedId){
+                    taskDocument._id = insertedId;
+                    if(error){
+                        throw error;
+                    }
+                    DeploymentList.update({_id: currentDeploy._id}, {$push:{taskList:insertedId}}, function(err){
+                        if(err){
+                            throw err;
+                        }
+                        DeployHelper.addTask(taskDocument);
+                    });
+                });
+            }
+        }
         var $separator = $('#separator');
         var isSeparator = ((typeof $separator.attr('checked') != 'undefined') && ($separator.attr('checked') == 'checked'));
         if(!isSeparator){

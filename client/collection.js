@@ -17,3 +17,13 @@ Meteor.autorun(function(){
         Meteor.subscribe('current-tasks', currentDeploy._id);
     }
 });
+
+TaskDocument = function(){
+    var self = this;
+    this.fromForm = function(p_formObject){
+
+    };
+    this.toDocument = function(){
+
+    };
+};

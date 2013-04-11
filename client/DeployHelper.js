@@ -47,7 +47,6 @@ var DeployHelper = {
         if(typeof value != 'undefined' && value != null){
             out = !value;
         }
-        console.log('Set value for [' + key + ']', out);
         Session.set(key, out);
     },
     isFullscreen: function(){
@@ -70,5 +69,8 @@ var DeployHelper = {
     },
     togglePlayerListUpdateState: function(){
         this.toggleSessionValue(this.playerListUpdateKey);
+    },
+    addTask: function(taskDocument){
+
     }
 };
