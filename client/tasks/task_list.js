@@ -61,21 +61,20 @@ Template.taskForm.events({
         if(currentDeploy != null){
             var taskForm = new TaskForm(currentDeploy);
             if(taskForm.isValid()){
-                taskForm.getObject();
-//                var taskDocument = new TaskDocument();
-//                taskDocument.fromForm(taskForm.getObject());
-//                TaskList.insert(taskDocument.toDocument(), function(error, insertedId){
-//                    taskDocument._id = insertedId;
-//                    if(error){
-//                        throw error;
-//                    }
-//                    DeploymentList.update({_id: currentDeploy._id}, {$push:{taskList:insertedId}}, function(err){
-//                        if(err){
-//                            throw err;
-//                        }
-//                        DeployHelper.addTask(taskDocument);
-//                    });
-//                });
+                var taskDocument = new TaskDocument();
+                taskDocument.fromForm(taskForm.getObject());
+                TaskList.insert(taskDocument.toDocument(), function(error, insertedId){
+                    taskDocument._id = insertedId;
+                    if(error){
+                        throw error;
+                    }
+                    DeploymentList.update({_id: currentDeploy._id}, {$push:{taskList:insertedId}}, function(err){
+                        if(err){
+                            throw err;
+                        }
+                        DeployHelper.addTask(taskDocument);
+                    });
+                });
             }else{
                 taskForm.highlightErrors();
             }
