@@ -61,39 +61,42 @@ Template.taskForm.events({
         if(currentDeploy != null){
             var taskForm = new TaskForm(currentDeploy);
             if(taskForm.isValid()){
-                var taskDocument = new TaskDocument();
-                taskDocument.fromForm(taskForm.getObject());
-                TaskList.insert(taskDocument.toDocument(), function(error, insertedId){
-                    taskDocument._id = insertedId;
-                    if(error){
-                        throw error;
-                    }
-                    DeploymentList.update({_id: currentDeploy._id}, {$push:{taskList:insertedId}}, function(err){
-                        if(err){
-                            throw err;
-                        }
-                        DeployHelper.addTask(taskDocument);
-                    });
-                });
+                taskForm.getObject();
+//                var taskDocument = new TaskDocument();
+//                taskDocument.fromForm(taskForm.getObject());
+//                TaskList.insert(taskDocument.toDocument(), function(error, insertedId){
+//                    taskDocument._id = insertedId;
+//                    if(error){
+//                        throw error;
+//                    }
+//                    DeploymentList.update({_id: currentDeploy._id}, {$push:{taskList:insertedId}}, function(err){
+//                        if(err){
+//                            throw err;
+//                        }
+//                        DeployHelper.addTask(taskDocument);
+//                    });
+//                });
+            }else{
+                taskForm.highlightErrors();
             }
         }
-        var $separator = $('#separator');
-        var isSeparator = ((typeof $separator.attr('checked') != 'undefined') && ($separator.attr('checked') == 'checked'));
-        if(!isSeparator){
-            var selectorList = ['#productName', '#description', '#command', '#server'];
-            for(var i = 0; i < selectorList.length; i++){
-                var currentSelector = selectorList[i];
-                var $currentField = $(currentSelector);
-                if($currentField.val() != ''){
-                    console.log(currentSelector, $currentField.val());
-
-                }else{
-                    $currentField.addClass();
-                    console.log('No value for ' + currentSelector);
-                }
-
-            }
-        }else{
-        }
+//        var $separator = $('#separator');
+//        var isSeparator = ((typeof $separator.attr('checked') != 'undefined') && ($separator.attr('checked') == 'checked'));
+//        if(!isSeparator){
+//            var selectorList = ['#productName', '#description', '#command', '#server'];
+//            for(var i = 0; i < selectorList.length; i++){
+//                var currentSelector = selectorList[i];
+//                var $currentField = $(currentSelector);
+//                if($currentField.val() != ''){
+//                    console.log(currentSelector, $currentField.val());
+//
+//                }else{
+//                    $currentField.addClass();
+//                    console.log('No value for ' + currentSelector);
+//                }
+//
+//            }
+//        }else{
+//        }
     }
 });
