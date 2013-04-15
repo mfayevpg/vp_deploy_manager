@@ -28,6 +28,7 @@ TaskDocument = function () {
     this.command = null;
     this.description = null;
     this.server = null;
+    this.position = null;
 
     this.fromForm = function (p_formObject) {
         self.deployId = p_formObject.deployId;
@@ -37,6 +38,7 @@ TaskDocument = function () {
         self.command = p_formObject.command;
         self.description = p_formObject.description;
         self.server = p_formObject.server;
+        self.position = p_formObject.position;
 
     };
     this.toDocument = function () {
@@ -47,7 +49,11 @@ TaskDocument = function () {
             buList: self.buList,
             command: self.command,
             description: self.description,
-            server: self.server
+            server: self.server,
+            position: self.position
         };
+    };
+    this.updateOrder = function(newPosition){
+        self.position = newPosition;
     };
 };

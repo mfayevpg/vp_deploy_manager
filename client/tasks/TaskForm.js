@@ -13,7 +13,8 @@ TaskForm = function(p_deploy){
         productName: '',
         command: '',
         server: '',
-        buList : []
+        buList : [],
+        position: 1
     };
 
     this.fieldIdList = {
