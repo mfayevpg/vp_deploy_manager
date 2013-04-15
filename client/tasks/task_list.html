@@ -1,282 +1,106 @@
 <template name="taskListDisplay">
     {{#if canUpdate}}
-    <a href="#" class="btn btn-success btn-mini" id="updateTaskList"><i class="icon-pencil icon-white"></i> Update</a>
+        <a href="#" class="btn btn-success btn-mini" id="updateTaskList"><i class="icon-pencil icon-white"></i>
+            Update</a>
     {{/if}}
-<table class="table">
-    <thead>
-    <tr>
-        <th>&nbsp;</th>
-        <th>Product</th>
-        <th>BU</th>
-        <th>Description</th>
-        <th>Command</th>
-        <th>Server</th>
-        <th>Execution time</th>
-        <th>&nbsp;</th>
-    </tr>
-    </thead>
-    <tbody>
-        {{#each taskList}}
+    <table class="table table-bordered">
+        <thead>
         <tr>
-            {{> taskDetailDisplay}}
+            {{#if canUpdate}}
+                <th>&nbsp;</th>
+            {{/if}}
+            <th>Product</th>
+            <th>BU</th>
+            <th>Description</th>
+            <th>Command</th>
+            <th>Server</th>
+            <th>Execution time</th>
+            {{#if canUpdate}}
+                <th>&nbsp;</th>
+            {{/if}}
         </tr>
-        {{/each}}
-        {{#if isUpdate}}
-        <tr>
-            {{> taskForm}}
-        </tr>
-        {{/if}}
-    <tr>
-
-    </tr>
-    <tr>
-        <td>
-            <a href="#"><i class="icon-arrow-down"></i></a>
-            <a href="#"><i class="icon-arrow-up"></i></a>
-        </td>
-        <td>
-            <pre>crontab -e (*/5 * * * * sh /web/git/scripts/replic_xapian.sh bu)</pre>
-            <a href="" class="btn btn-info btn-mini">Activer</a>
-            <a href="" class="btn btn-warning btn-mini disabled">Annuler</a>
-            <a href="" class="btn btn-danger btn-mini disabled">Terminer</a>
-        </td>
-        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
-                       target="_blank">
-            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
-        </a>
-        </td>
-        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
-                       target="_blank">
-            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
-        </a></td>
-        <td>
-            <a href="#" class="btn btn-mini"><i class="icon-remove"></i></a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <a href="#"><i class="icon-arrow-down"></i></a>
-            <a href="#"><i class="icon-arrow-up"></i></a>
-        </td>
-        <td>
-            <pre>crontab -e (*/5 * * * * sh /web/git/scripts/replic_xapian.sh bu)</pre>
-            <a href="" class="btn btn-info btn-mini">Activer</a>
-            <a href="" class="btn btn-warning btn-mini disabled">Annuler</a>
-            <a href="" class="btn btn-danger btn-mini disabled">Terminer</a>
-        </td>
-        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
-                       target="_blank">
-            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
-        </a>
-        </td>
-        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
-                       target="_blank">
-            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
-        </a></td>
-        <td>
-            <a href="#" class="btn btn-mini"><i class="icon-remove"></i></a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <a href="#"><i class="icon-arrow-up"></i></a>
-        </td>
-        <td>
-            <pre>crontab -e (*/5 * * * * sh /web/git/scripts/replic_xapian.sh bu)</pre>
-            <a href="" class="btn btn-info btn-mini disabled">Activer</a>
-            <a href="" class="btn btn-warning btn-mini">Annuler</a>
-            <a href="" class="btn btn-danger btn-mini">Terminer</a>
-        </td>
-        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
-                       target="_blank">
-            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
-        </a>
-        </td>
-        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
-                       target="_blank">
-            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
-        </a></td>
-        <td>
-            <a href="#" class="btn btn-mini"><i class="icon-remove"></i></a>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="5">
-            <p class="text-center">
-                <a href="" class="btn btn-small"><i class="icon-plus"></i>Ajouter une tâche</a>
-            </p>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<table class="table">
-    <thead>
-    <tr>
-        <th><a href="#"><i class="icon-arrow-up"></i></a></th>
-        <th>IT - UK - BR &nbsp; <a class="btn btn-success btn-mini" href="#"><i class="icon-pencil icon-white"></i>&nbsp;Modifier</a>
-        </th>
-        <th>Commencé à / Par</th>
-        <th>Terminé à / Par</th>
-        <th>&nbsp;</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>
-            <a href="#"><i class="icon-arrow-down"></i></a>
-        </td>
-        <td>
-            <pre>crontab -e (*/5 * * * * sh /web/git/scripts/replic_xapian.sh bu)</pre>
-            <a href="" class="btn btn-info btn-mini">Activer</a>
-            <a href="" class="btn btn-warning btn-mini disabled">Annuler</a>
-            <a href="" class="btn btn-danger btn-mini disabled">Terminer</a>
-        </td>
-        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
-                       target="_blank">
-            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
-        </a>
-        </td>
-        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
-                       target="_blank">
-            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
-        </a></td>
-        <td>
-            <a href="#" class="btn btn-mini"><i class="icon-remove"></i></a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <a href="#"><i class="icon-arrow-down"></i></a>
-            <a href="#"><i class="icon-arrow-up"></i></a>
-        </td>
-        <td>
-            <pre>crontab -e (*/5 * * * * sh /web/git/scripts/replic_xapian.sh bu)</pre>
-            <a href="" class="btn btn-info btn-mini">Activer</a>
-            <a href="" class="btn btn-warning btn-mini disabled">Annuler</a>
-            <a href="" class="btn btn-danger btn-mini disabled">Terminer</a>
-        </td>
-        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
-                       target="_blank">
-            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
-        </a>
-        </td>
-        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
-                       target="_blank">
-            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
-        </a></td>
-        <td>
-            <a href="#" class="btn btn-mini"><i class="icon-remove"></i></a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <a href="#"><i class="icon-arrow-down"></i></a>
-            <a href="#"><i class="icon-arrow-up"></i></a>
-        </td>
-        <td>
-            <pre>crontab -e (*/5 * * * * sh /web/git/scripts/replic_xapian.sh bu)</pre>
-            <a href="" class="btn btn-info btn-mini">Activer</a>
-            <a href="" class="btn btn-warning btn-mini disabled">Annuler</a>
-            <a href="" class="btn btn-danger btn-mini disabled">Terminer</a>
-        </td>
-        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
-                       target="_blank">
-            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
-        </a>
-        </td>
-        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
-                       target="_blank">
-            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
-        </a></td>
-        <td>
-            <a href="#" class="btn btn-mini"><i class="icon-remove"></i></a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <a href="#"><i class="icon-arrow-down"></i></a>
-            <a href="#"><i class="icon-arrow-up"></i></a>
-        </td>
-        <td>
-            <pre>crontab -e (*/5 * * * * sh /web/git/scripts/replic_xapian.sh bu)</pre>
-            <a href="" class="btn btn-info btn-mini">Activer</a>
-            <a href="" class="btn btn-warning btn-mini disabled">Annuler</a>
-            <a href="" class="btn btn-danger btn-mini disabled">Terminer</a>
-        </td>
-        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
-                       target="_blank">
-            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
-        </a>
-        </td>
-        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
-                       target="_blank">
-            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
-        </a></td>
-        <td>
-            <a href="#" class="btn btn-mini"><i class="icon-remove"></i></a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <a href="#"><i class="icon-arrow-up"></i></a>
-        </td>
-        <td>
-            <pre>crontab -e (*/5 * * * * sh /web/git/scripts/replic_xapian.sh bu)</pre>
-            <a href="" class="btn btn-info btn-mini disabled">Activer</a>
-            <a href="" class="btn btn-warning btn-mini">Annuler</a>
-            <a href="" class="btn btn-danger btn-mini">Terminer</a>
-        </td>
-        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
-                       target="_blank">
-            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
-        </a>
-        </td>
-        <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
-                       target="_blank">
-            <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
-        </a></td>
-        <td>
-            <a href="#" class="btn btn-mini"><i class="icon-remove"></i></a>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="5">
-            <p class="text-center">
-                <a href="" class="btn btn-small"><i class="icon-plus"></i>Ajouter une tâche</a>
-            </p>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<p><a href="" class="btn btn-small"><i class="icon-plus"></i>Ajouter un Pays</a></p>
+        </thead>
+        <tbody>
+            {{#each taskList}}
+            <tr>
+                {{> taskDetailDisplay}}
+            </tr>
+            {{/each}}
+            {{#if isUpdate}}
+            <tr>
+                {{> taskForm}}
+            </tr>
+            {{/if}}
+        </tbody>
+    </table>
 </template>
 
 <template name="taskDetailDisplay">
+    {{#if canUpdate}}
+        <td>
+            {{#if canGoDown}}
+                <a href="#"><i class="icon-arrow-down"></i></a>
+            {{/if}}
+            {{#if canGoUp}}
+                <a href="#"><i class="icon-arrow-up"></i></a>
+            {{/if}}
+        </td>
+    {{/if}}
+    {{#if isSeparator}}
+        {{> separatorDisplay}}
+    {{else}}
+        {{> normalTaskDisplay}}
+    {{/if}}
+    {{#if canUpdate}}
+        <td>
+            {{#if isUpdate}}
+                <a href="#" class="btn btn-mini"><i class="icon-remove"></i></a>
+            {{else}}
+                &nbsp;
+            {{/if}}
+
+        </td>
+    {{/if}}
+</template>
+
+<template name="normalTaskDisplay">
+    <!--<th>Product</th>-->
+    <!--<th>BU</th>-->
+    <!--<th>Description</th>-->
+    <!--<th>Command</th>-->
+    <!--<th>Server</th>-->
+    <!--<th>Execution time</th>-->
     <td>
-        {{#if canGoDown}}
-            <a href="#"><i class="icon-arrow-down"></i></a>
+        {{productName}}
+    </td>
+    <td>
+        {{#if buList}}
+            <ul>
+            {{#each buList}}
+                <li>{{this}}</li>
+            {{/each}}
+            </ul>
         {{/if}}
-        {{#if canGoUp}}
-            <a href="#"><i class="icon-arrow-up"></i></a>
-        {{/if}}
     </td>
     <td>
-        <pre>crontab -e (*/5 * * * * sh /web/git/scripts/replic_xapian.sh bu)</pre>
-        <a href="" class="btn btn-info btn-mini">Activer</a>
-        <a href="" class="btn btn-warning btn-mini disabled">Annuler</a>
-        <a href="" class="btn btn-danger btn-mini disabled">Terminer</a>
+        {{description}}
     </td>
-    <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
-                   target="_blank">
-        <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
-    </a>
-    </td>
-    <td>12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
-                   target="_blank">
-        <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}">
-    </a></td>
     <td>
-        <a href="#" class="btn btn-mini"><i class="icon-remove"></i></a>
+        <pre>{{command}}</pre>
+    </td>
+    <td>{{server}}</td>
+    <td>{{> userTimeDisplay}}<br/>{{> userTimeDisplay}}</td>
+</template>
+
+<template name="userTimeDisplay">
+    12:41 - <a href="{{currentUser.profile.html_url}}" title="{{currentUser.profile.name}}"
+               target="_blank">
+    <img style="height: 32px; width: 32px;" src="{{currentUser.profile.avatar_url}}"></a>
+</template>
+
+<template name="separatorDisplay">
+    <td colspan="6">
+        <div class="text-center">{{description}}</div>
     </td>
 </template>
 
@@ -285,12 +109,14 @@
         <form class="form-horizontal">
             <div class="control-group">
                 <label class="control-label">&nbsp;</label>
+
                 <div class="controls">
                     <label class="checkbox"><input type="checkbox" id="separator"> Separator</label>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label">Product Name</label>
+
                 <div class="controls">
                     <select class="input-small" id="productName">
                         <option value="">Select</option>
@@ -304,6 +130,7 @@
             </div>
             <div class="control-group">
                 <label class="control-label">BU</label>
+
                 <div class="controls">
                     <label class="checkbox inline"><input id="bu_BR" value="br" type="checkbox">BR</label>
                     <label class="checkbox inline"><input id="bu_ES" value="es" type="checkbox">ES</label>
@@ -315,6 +142,7 @@
             </div>
             <div class="control-group">
                 <label class="control-label">Description</label>
+
                 <div class="controls">
                     <textarea class="input-xlarge" id="description"></textarea>
                 </div>
@@ -322,12 +150,14 @@
 
             <div class="control-group">
                 <label class="control-label">Command</label>
+
                 <div class="controls">
                     <input type="text" class="input-xxlarge" id="command">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label">Server</label>
+
                 <div class="controls">
                     <select class="input-small" id="server">
                         <option value="">Select</option>

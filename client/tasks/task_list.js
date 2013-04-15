@@ -80,23 +80,5 @@ Template.taskForm.events({
                 taskForm.highlightErrors();
             }
         }
-//        var $separator = $('#separator');
-//        var isSeparator = ((typeof $separator.attr('checked') != 'undefined') && ($separator.attr('checked') == 'checked'));
-//        if(!isSeparator){
-//            var selectorList = ['#productName', '#description', '#command', '#server'];
-//            for(var i = 0; i < selectorList.length; i++){
-//                var currentSelector = selectorList[i];
-//                var $currentField = $(currentSelector);
-//                if($currentField.val() != ''){
-//                    console.log(currentSelector, $currentField.val());
-//
-//                }else{
-//                    $currentField.addClass();
-//                    console.log('No value for ' + currentSelector);
-//                }
-//
-//            }
-//        }else{
-//        }
     }
 });
