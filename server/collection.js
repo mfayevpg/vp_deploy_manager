@@ -23,7 +23,7 @@ Meteor.publish('users', function(){
 });
 
 Meteor.publish('current-tasks', function(deploymentId){
-    return TaskList.find({'deploymentId': deploymentId});
+    return TaskList.find({deployId: deploymentId});
 });
 
 Meteor.users.allow({
