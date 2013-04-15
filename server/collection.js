@@ -10,6 +10,10 @@ function isAdmin(userId){
     return (Meteor.users.find({_id: userId}).count() == 1);
 }
 
+function isPlayer(userId, deployId){
+    return (DeploymentList.find({_id:deployId, 'playerList._id':userId}).count() > 0);
+}
+
 Meteor.publish('deployment-list', function(){
     return DeploymentList.find({});
 });
@@ -42,5 +46,18 @@ DeploymentList.allow({
     },
     remove:function(userId){
         return isAdmin(userId);
+    }
+});
+
+TaskList.allow({
+    insert: function(userId,doc){
+        var out = isAdmin(userId);
+        if(!out){
+            if(isPlayer(userId, doc.deployId)){
+                out = true;
+            }
+        }
+
+        return out;
     }
 });

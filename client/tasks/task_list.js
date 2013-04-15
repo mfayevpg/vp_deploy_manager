@@ -73,6 +73,7 @@ Template.taskForm.events({
                             throw err;
                         }
                         DeployHelper.addTask(taskDocument);
+                        taskForm.clean();
                     });
                 });
             }else{

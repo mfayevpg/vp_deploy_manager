@@ -61,35 +61,53 @@ TaskForm = function(p_deploy){
         return ((typeof jQueryWrapper.attr('checked') != 'undefined') && (jQueryWrapper.attr('checked') == 'checked'))
     }
 
-    function getFieldVal(fieldName){
+    function workFieldVal(fieldName, fieldValue){
         self[fieldName] = initJqueryWrapper(self[fieldName], self.fieldIdList[fieldName]);
 
-        return self[fieldName].val();
+        var out = fieldValue;
+        if(typeof fieldValue != 'undefined'){
+            self[fieldName].val(fieldValue);
+        }else{
+            out = self[fieldName].val();
+        }
+
+        return out;
     }
 
     this.getProductName = function(){
-        return getFieldVal('productName');
+        return workFieldVal('productName');
     };
     
     this.getCommand = function(){
-        return getFieldVal('command');
+        return workFieldVal('command');
     };
 
     this.getServer = function(){
-        return getFieldVal('server');
+        return workFieldVal('server');
     };
 
 
     this.getDescription = function(){
-        return getFieldVal('description');
+        return workFieldVal('description');
     };
 
-    this.getBuList = function(){
+    this.workBuList = function(isChecked){
         var out = [];
+        var needToCheck = false;
+        var checkedValue = false;
+        if(typeof isChecked != 'undefined'){
+            checkedValue = isChecked;
+        }
         $('input[id^=bu_]').each(function(){
             var $self = $(this);
-            if(isCheckboxChecked($self)){
-                out.push($self.attr('value'));
+            if(!needToCheck){
+                if(isCheckboxChecked($self)){
+                    out.push($self.attr('value'));
+                }
+            }else{
+                if(needToCheck && checkedValue){
+                    $self.attr('checked', 'checked');
+                }
             }
         });
 
@@ -102,12 +120,22 @@ TaskForm = function(p_deploy){
         self.pojso.command = self.getCommand();
         self.pojso.description = self.getDescription();
         self.pojso.server = self.getServer();
-        self.pojso.buList = self.getBuList();
+        self.pojso.buList = self.workBuList();
         console.log(self.pojso);
         return self.pojso;
     };
 
     this.highlightErrors = function(){
         self.description.parent().parent().addClass('error');
+    };
+
+    this.clean = function(){
+        workFieldVal('productName', '');
+        workFieldVal('command', '');
+        workFieldVal('server', '');
+        workFieldVal('description', '');
+        self.workBuList(false);
+        self.separator = initJqueryWrapper(self.separator, self.fieldIdList.separator);
+        self.separator.removeAttr('checked');
     };
 };
