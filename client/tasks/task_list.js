@@ -25,10 +25,8 @@ Template.taskListDisplay.helpers({
         }
 
         return taskListForDisplay;
-    },
-    isUpdate: function () {
-        return (DeployHelper.getTaskListUpdateState() && Handlebars._default_helpers.canUpdate());
     }
+
 });
 
 Template.taskListDisplay.events({
@@ -44,6 +42,9 @@ Template.taskDetailDisplay.helpers({
     },
     canGoUp: function () {
         return !this.isFirst;
+    },
+    isUpdate: function () {
+        return ((DeployHelper.getTaskListUpdateState()) && (Handlebars._default_helpers.canUpdate()));
     }
 });
 

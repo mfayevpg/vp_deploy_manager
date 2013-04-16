@@ -7,7 +7,7 @@
         <thead>
         <tr>
             {{#if canUpdate}}
-                <th>&nbsp;</th>
+                <th>Move</th>
             {{/if}}
             <th>Product</th>
             <th>BU</th>
@@ -16,7 +16,7 @@
             <th>Server</th>
             <th>Execution time</th>
             {{#if canUpdate}}
-                <th>&nbsp;</th>
+                <th>Action</th>
             {{/if}}
         </tr>
         </thead>
@@ -54,6 +54,7 @@
     {{#if canUpdate}}
         <td>
             {{#if isUpdate}}
+                <a href="#" class="btn btn-mini"><i class="icon-pencil"></i></a>
                 <a href="#" class="btn btn-mini"><i class="icon-remove"></i></a>
             {{else}}
                 &nbsp;
