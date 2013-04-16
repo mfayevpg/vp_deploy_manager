@@ -122,7 +122,6 @@ TaskForm = function(p_deploy){
         self.pojso.description = self.getDescription();
         self.pojso.server = self.getServer();
         self.pojso.buList = self.workBuList();
-        console.log(self.pojso);
         return self.pojso;
     };
 

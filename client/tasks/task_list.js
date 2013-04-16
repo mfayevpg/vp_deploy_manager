@@ -26,6 +26,10 @@ Template.taskListDisplay.helpers({
 
         return taskListForDisplay;
     }
+    ,
+    isUpdate: function () {
+        return ((DeployHelper.getTaskListUpdateState()) && (Handlebars._default_helpers.canUpdate()));
+    }
 
 });
 
@@ -33,6 +37,17 @@ Template.taskListDisplay.events({
     'click a#updateTaskList': function (event) {
         event.preventDefault();
         DeployHelper.toggleTaskListUpdateState();
+    }
+});
+
+Template.taskDetailDisplay.events({
+    'click a.goDown': function(event){
+        event.preventDefault();
+        console.log(event, this);
+    },
+    'click a.goUp': function(event){
+        event.preventDefault();
+        console.log(event, this);
     }
 });
 
@@ -72,13 +87,12 @@ Template.taskForm.events({
             if (taskForm.isValid()) {
                 var taskDocument = new TaskDocument();
                 taskDocument.fromForm(taskForm.getObject());
-                var maxOrder = TaskList.findOne({deployId: currentDeploy._id}, {ordered:{position: 1}, fields:{position:1}});
-                if(!maxOrder){
-                    maxOrder = 1;
-                }else{
-                    maxOrder++;
+                var maxOrder = TaskList.findOne({deployId: currentDeploy._id}, {sort:{position: -1}});
+                var newOrder = 1;
+                if(maxOrder){
+                    newOrder = maxOrder.position + 1;
                 }
-                taskDocument.updateOrder(maxOrder);
+                taskDocument.updateOrder(newOrder);
                 TaskList.insert(taskDocument.toDocument(), function (error, insertedId) {
                     taskDocument._id = insertedId;
                     if (error) {
