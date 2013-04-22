@@ -1,66 +1,75 @@
 <template name="taskListDisplay">
-    {{#if canUpdate}}
-        <a href="#" class="btn btn-success btn-mini" id="updateTaskList"><i class="icon-pencil icon-white"></i>
-            Update</a>
-    {{/if}}
+  {{#if canUpdate}}
+      <a href="#" class="btn btn-success btn-mini" id="updateTaskList"><i class="icon-pencil icon-white"></i>
+          Update</a>
+  {{/if}}
     <table class="table table-bordered">
         <thead>
         <tr>
-            {{#if canUpdate}}
-                <th>Move</th>
-            {{/if}}
+          {{#if canUpdate}}
+              <th>Move</th>
+          {{/if}}
             <th>Product</th>
             <th>BU</th>
             <th>Description</th>
             <th>Command</th>
             <th>Server</th>
             <th>Execution time</th>
-            {{#if canUpdate}}
-                <th>Action</th>
-            {{/if}}
+          {{#if canUpdate}}
+              <th>Action</th>
+          {{/if}}
         </tr>
         </thead>
         <tbody>
-            {{#each taskList}}
-            <tr>
-                {{> taskDetailDisplay}}
-            </tr>
-            {{/each}}
-            {{#if isUpdate}}
-            <tr>
-                {{> taskForm}}
-            </tr>
-            {{/if}}
+          {{#each taskList}}
+          <tr>
+            {{> taskDetailDisplay}}
+          </tr>
+          {{/each}}
+          {{#if isUpdate}}
+          <tr>
+            {{> taskForm}}
+          </tr>
+          {{/if}}
         </tbody>
     </table>
 </template>
 
 <template name="taskDetailDisplay">
+  {{#if waitingForRemovalConfirmation}}
+      <td colspan="8">
+          <div class="alert alert-info">
+              <p>Your are about to remove this task. This can not be undone.</p>
+
+              <p>
+                  <a class="btn btn-mini btn-danger removalConfirmation">Yes proceed</a>
+                  <a class="btn btn-mini removalCancellation">Nope cancel</a>
+              </p>
+          </div>
+      </td>
+  {{else}}
     {{#if canUpdate}}
         <td>
-            {{#if canGoDown}}
-                <a href="#" class="goDown"><i class="icon-arrow-down"></i></a>
-            {{/if}}
-            {{#if canGoUp}}
-                <a href="#" class="goUp"><i class="icon-arrow-up"></i></a>
-            {{/if}}
+            <a href="#" class="btn btn-mini goDown {{canGoDown}}"><i class="icon-arrow-down"></i></a>
+            <a href="#" class="btn btn-mini goUp {{canGoUp}}"><i class="icon-arrow-up"></i></a>
         </td>
     {{/if}}
     {{#if isSeparator}}
-        {{> separatorDisplay}}
+      {{> separatorDisplay}}
     {{else}}
-        {{> normalTaskDisplay}}
+      {{> normalTaskDisplay}}
     {{/if}}
     {{#if canUpdate}}
         <td>
-            {{#if isUpdate}}
-                <a href="#" class="btn btn-mini"><i class="icon-pencil"></i></a>
-                <a href="#" class="btn btn-mini"><i class="icon-remove"></i></a>
-            {{else}}
-                &nbsp;
-            {{/if}}
+          {{#if isUpdate}}
+              <a href="#" class="btn btn-mini updateTask"><i class="icon-pencil"></i></a>
+              <a href="#" class="btn btn-mini removeTask"><i class="icon-remove"></i></a>
+          {{else}}
+              &nbsp;
+          {{/if}}
         </td>
     {{/if}}
+  {{/if}}
 </template>
 
 <template name="normalTaskDisplay">
@@ -71,19 +80,19 @@
     <!--<th>Server</th>-->
     <!--<th>Execution time</th>-->
     <td>
-        {{productName}}
+      {{productName}}
     </td>
     <td>
-        {{#if buList}}
-            <ul>
+      {{#if buList}}
+          <ul>
             {{#each buList}}
                 <li>{{this}}</li>
             {{/each}}
-            </ul>
-        {{/if}}
+          </ul>
+      {{/if}}
     </td>
     <td>
-        {{description}}
+      {{description}}
     </td>
     <td>
         <pre>{{command}}</pre>

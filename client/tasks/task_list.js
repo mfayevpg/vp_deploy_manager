@@ -3,6 +3,25 @@
  * Date: 08/04/13
  * Time: 08:30
  */
+
+function exchangePosition(taskToExchangeWith, taskToMove, taskToExchangeWithPosition) {
+    console.log('Old position : ', taskToMove.position, 'New position : ', taskToExchangeWithPosition);
+    TaskList.update({_id: taskToExchangeWith._id}, {$set: {position: taskToMove.position}}, function (err) {
+        if (err) {
+            throw err;
+        }
+        TaskList.update({_id: taskToMove._id}, {$set: {position: taskToExchangeWithPosition}});
+    });
+}
+
+function removeFromWaitingRemovalConfirmation(taskId) {
+    var waitingForRemovalConfirmationList = Session.get('waitingForRemovalConfirmation');
+    waitingForRemovalConfirmationList = _.reject(waitingForRemovalConfirmationList, function (element) {
+        return (element._id == taskId);
+    });
+    Session.set('waitingForRemovalConfirmation', waitingForRemovalConfirmationList);
+}
+
 Template.taskListDisplay.helpers({
     taskList: function () {
         var taskListForDisplay = [];
@@ -10,7 +29,7 @@ Template.taskListDisplay.helpers({
         if (currentDeploy != null) {
             var currentIndex = 0;
             var selector = {deployId: currentDeploy._id};
-            var options = {ordered: {position: 1}};
+            var options = {sort: {position: 1}};
             var taskCursor = TaskList.find(selector, options);
             var taskListLength = taskCursor.count();
             taskCursor.forEach(function (task) {
@@ -25,8 +44,7 @@ Template.taskListDisplay.helpers({
         }
 
         return taskListForDisplay;
-    }
-    ,
+    },
     isUpdate: function () {
         return ((DeployHelper.getTaskListUpdateState()) && (Handlebars._default_helpers.canUpdate()));
     }
@@ -41,25 +59,73 @@ Template.taskListDisplay.events({
 });
 
 Template.taskDetailDisplay.events({
-    'click a.goDown': function(event){
+    'click a.goDown': function (event) {
         event.preventDefault();
-        console.log(event, this);
+        var nextTask = TaskList.findOne({position: {$gt: this.position}}, {sort: {position: 1}});
+        if(nextTask){
+            TaskList.update({_id: nextTask._id}, {$set:{position: this.position}});
+            TaskList.update({_id: this._id}, {$set:{position: nextTask.position}});
+        }
     },
-    'click a.goUp': function(event){
+    'click a.goUp': function (event) {
         event.preventDefault();
-        console.log(event, this);
+        var previousTask = TaskList.findOne({position: {$lt: this.position}}, {sort: {position: -1}});
+        if(previousTask){
+            TaskList.update({_id: previousTask._id}, {$set:{position: this.position}});
+            TaskList.update({_id: this._id}, {$set:{position: previousTask.position}});
+        }
+    },
+
+    'click a.removeTask': function (event) {
+        event.preventDefault();
+        var waitingForRemovalConfirmationList = Session.get('waitingForRemovalConfirmation');
+        if (!waitingForRemovalConfirmationList) {
+            waitingForRemovalConfirmationList = [];
+        }
+        waitingForRemovalConfirmationList.push(this);
+        Session.set('waitingForRemovalConfirmation', waitingForRemovalConfirmationList);
+    },
+    'click a.removalCancellation': function (event) {
+        event.preventDefault();
+        var self = this;
+        removeFromWaitingRemovalConfirmation(self._id);
+    },
+    'click a.removalConfirmation': function (event) {
+        event.preventDefault();
+        var self = this;
+        TaskList.remove({_id: self._id}, function (err) {
+            if (err) {
+                throw err;
+            }
+            removeFromWaitingRemovalConfirmation(self._id);
+        });
     }
 });
 
 Template.taskDetailDisplay.helpers({
     canGoDown: function () {
-        return !this.isLast;
+        var out = '';
+        if(this.isLast){
+            out = 'disabled';
+        }
+        return out;
     },
     canGoUp: function () {
-        return !this.isFirst;
+        var out = '';
+        if(this.isFirst){
+            out = 'disabled';
+        }
+        return out;
     },
     isUpdate: function () {
         return ((DeployHelper.getTaskListUpdateState()) && (Handlebars._default_helpers.canUpdate()));
+    },
+    waitingForRemovalConfirmation: function () {
+        var self = this;
+        var waitingForRemovalConfirmationList = Session.get('waitingForRemovalConfirmation');
+        return _.find(waitingForRemovalConfirmationList, function (element) {
+            return self._id == element._id
+        })
     }
 });
 
@@ -87,9 +153,9 @@ Template.taskForm.events({
             if (taskForm.isValid()) {
                 var taskDocument = new TaskDocument();
                 taskDocument.fromForm(taskForm.getObject());
-                var maxOrder = TaskList.findOne({deployId: currentDeploy._id}, {sort:{position: -1}});
+                var maxOrder = TaskList.findOne({deployId: currentDeploy._id}, {sort: {position: -1}});
                 var newOrder = 1;
-                if(maxOrder){
+                if (maxOrder) {
                     newOrder = maxOrder.position + 1;
                 }
                 taskDocument.updateOrder(newOrder);
