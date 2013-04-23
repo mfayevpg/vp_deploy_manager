@@ -22,7 +22,8 @@ TaskForm = function (p_deploy) {
         description: 'description',
         productName: 'productName',
         command: 'command',
-        server: 'server'
+        server: 'server',
+        position: 'position'
     };
 
     this.separator = null;
@@ -30,6 +31,7 @@ TaskForm = function (p_deploy) {
     this.productName = null;
     this.command = null;
     this.server = null;
+    this.position = null;
 
     if (p_deploy != null) {
         self.pojso.deployId = p_deploy._id;
@@ -43,6 +45,9 @@ TaskForm = function (p_deploy) {
     function initJqueryWrapper(container, selector) {
         if (container == null) {
             container = $('#' + selector);
+            if(container.length == 0){
+                container = null;
+            }
         }
         return container;
     }
@@ -63,13 +68,14 @@ TaskForm = function (p_deploy) {
     }
 
     function workFieldVal(fieldName, fieldValue) {
+        var out = null;
         self[fieldName] = initJqueryWrapper(self[fieldName], self.fieldIdList[fieldName]);
-
-        var out = fieldValue;
-        if (typeof fieldValue != 'undefined') {
-            self[fieldName].val(fieldValue);
-        } else {
-            out = self[fieldName].val();
+        if(self[fieldName] != null){
+            if (typeof fieldValue != 'undefined') {
+                self[fieldName].val(fieldValue);
+            } else {
+                out = self[fieldName].val();
+            }
         }
 
         return out;
@@ -85,6 +91,10 @@ TaskForm = function (p_deploy) {
 
     this.getServer = function () {
         return workFieldVal('server');
+    };
+
+    this.getPosition = function(){
+        return workFieldVal('position');
     };
 
 
@@ -134,6 +144,7 @@ TaskForm = function (p_deploy) {
         self.pojso.description = self.getDescription();
         self.pojso.server = self.getServer();
         self.pojso.buList = self.retrieveCheckedBuList();
+
         return self.pojso;
     };
 
@@ -146,6 +157,7 @@ TaskForm = function (p_deploy) {
         workFieldVal('command', '');
         workFieldVal('server', '');
         workFieldVal('description', '');
+        workFieldVal('position', '');
         self.checkBuListCheckbox(false);
         self.separator = initJqueryWrapper(self.separator, self.fieldIdList.separator);
         self.separator.removeAttr('checked');
@@ -153,11 +165,11 @@ TaskForm = function (p_deploy) {
 
     this.initFormWithTask = function (taskDocument) {
         workFieldVal('description', taskDocument.description);
+        workFieldVal('position', taskDocument.position);
         self.separator = initJqueryWrapper(self.separator, self.fieldIdList.separator);
         if(taskDocument.isSeparator){
             self.separator.attr('checked', true);
             this.toggleSeparatorMode();
-//            self.separator.trigger('click');
         }else{
             self.separator.attr('checked', false);
             workFieldVal('productName', taskDocument.productName);

@@ -54,5 +54,27 @@ Template.taskForm.events({
         DeployHelper.setTaskToUpdate(null);
         var taskForm = new TaskForm(null);
         taskForm.clean();
+    },
+    'click a#updateTask': function (event) {
+        event.preventDefault();
+        var currentDeploy = DeployHelper.getCurrentDeploy();
+        if (currentDeploy != null) {
+            var taskForm = new TaskForm(currentDeploy);
+            if (taskForm.isValid()) {
+                var taskDocument = new TaskDocument();
+                taskDocument.fromForm(taskForm.getObject());
+                var taskToUpdate = DeployHelper.getTaskToUpdate();
+                taskDocument.updateOrder(taskToUpdate.position);
+                var mongoModifier = taskDocument.generateUpdateModifier();
+                TaskList.update({_id: taskToUpdate._id}, mongoModifier, function(err){
+                    if (err) {
+                        throw err;
+                    }
+                    taskForm.clean();
+                });
+            } else {
+                taskForm.highlightErrors();
+            }
+        }
     }
 });

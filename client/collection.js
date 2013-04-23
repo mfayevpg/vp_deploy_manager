@@ -56,4 +56,8 @@ TaskDocument = function () {
     this.updateOrder = function(newPosition){
         self.position = newPosition;
     };
+
+    this.generateUpdateModifier = function(){
+        return {$set : this.toDocument()};
+    }
 };

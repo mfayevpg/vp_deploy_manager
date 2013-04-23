@@ -64,13 +64,7 @@ TaskList.allow({
         return canEditTask(userId, doc);
     },
     update :function(userId, doc, fieldNames, modifier){
-        var out = canEditTask(userId, doc);
-        if(out){
-            var isPositionUpdate = (fieldNames[0] == 'position');
-            isPositionUpdate = (isPositionUpdate && (typeof modifier['$set']['position'] != 'undefined'));
-            out = isPositionUpdate;
-        }
-        return out;
+        return canEditTask(userId, doc);
     },
     remove: function(userId, doc){
         return canEditTask(userId, doc);
