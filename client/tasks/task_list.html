@@ -14,8 +14,11 @@
             <th>Description</th>
             <th>Command</th>
             <th>Server</th>
+          {{#if isInProgress}}
+              <th>Status</th>
+          {{/if}}
             <th>Execution time</th>
-          {{#if canUpdate}}
+          {{#if isUpdate}}
               <th>Action</th>
           {{/if}}
         </tr>
@@ -59,14 +62,10 @@
     {{else}}
       {{> normalTaskDisplay}}
     {{/if}}
-    {{#if canUpdate}}
+    {{#if isUpdate}}
         <td>
-          {{#if isUpdate}}
-              <a href="#" class="btn btn-mini updateTask"><i class="icon-pencil"></i></a>
-              <a href="#" class="btn btn-mini removeTask"><i class="icon-remove"></i></a>
-          {{else}}
-              &nbsp;
-          {{/if}}
+            <a href="#" class="btn btn-mini updateTask"><i class="icon-pencil"></i></a>
+            <a href="#" class="btn btn-mini removeTask"><i class="icon-remove"></i></a>
         </td>
     {{/if}}
   {{/if}}
@@ -97,7 +96,11 @@
     <td>
         <pre>{{command}}</pre>
     </td>
+
     <td>{{server}}</td>
+  {{#if isInProgress}}
+      <th>Status</th>
+  {{/if}}
     <td>{{> userTimeDisplay}}<br/>{{> userTimeDisplay}}</td>
 </template>
 
@@ -108,7 +111,11 @@
 </template>
 
 <template name="separatorDisplay">
-    <td colspan="6">
-        <div class="text-center">{{description}}</div>
-    </td>
+  {{#if isInProgress}}
+  <td colspan="7">
+  {{else}}
+  <td colspan="6">
+  {{/if}}
+    <div class="text-center">{{description}}</div>
+</td>
 </template>

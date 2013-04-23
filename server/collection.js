@@ -37,11 +37,6 @@ Meteor.publish('current-tasks', function(deploymentId){
     return TaskList.find({deployId: deploymentId});
 });
 
-//    update: function(userId, doc, fieldNames, modifier){
-//        return isAdmin(userId);
-//    }
-//});
-
 DeploymentList.allow({
     insert:function(userId){
         return isAdmin(userId);
