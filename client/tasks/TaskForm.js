@@ -4,7 +4,7 @@
  * Time: 08:35
  */
 
-TaskForm = function(p_deploy){
+TaskForm = function (p_deploy) {
     var self = this;
     this.pojso = {
         deployId: '',
@@ -13,12 +13,12 @@ TaskForm = function(p_deploy){
         productName: '',
         command: '',
         server: '',
-        buList : [],
+        buList: [],
         position: 1
     };
 
     this.fieldIdList = {
-        separator : 'separator',
+        separator: 'separator',
         description: 'description',
         productName: 'productName',
         command: 'command',
@@ -31,11 +31,11 @@ TaskForm = function(p_deploy){
     this.command = null;
     this.server = null;
 
-    if(p_deploy != null){
+    if (p_deploy != null) {
         self.pojso.deployId = p_deploy._id;
     }
 
-    this.initializeFromForm = function(){
+    this.initializeFromForm = function () {
         self.description = initJqueryWrapper(self.description, self.fieldIdList.description);
         self.description.parent().parent().removeClass('error');
     };
@@ -47,95 +47,135 @@ TaskForm = function(p_deploy){
         return container;
     }
 
-    this.isSeparator = function(){
+    this.isSeparator = function () {
         self.separator = initJqueryWrapper(self.separator, self.fieldIdList.separator);
         return isCheckboxChecked(self.separator);
     };
 
-    this.isValid = function(){
+    this.isValid = function () {
         self.initializeFromForm();
         var currentDescription = self.getDescription();
         return (currentDescription != '');
     };
 
-    function isCheckboxChecked (jQueryWrapper){
+    function isCheckboxChecked(jQueryWrapper) {
         return ((typeof jQueryWrapper.attr('checked') != 'undefined') && (jQueryWrapper.attr('checked') == 'checked'))
     }
 
-    function workFieldVal(fieldName, fieldValue){
+    function workFieldVal(fieldName, fieldValue) {
         self[fieldName] = initJqueryWrapper(self[fieldName], self.fieldIdList[fieldName]);
 
         var out = fieldValue;
-        if(typeof fieldValue != 'undefined'){
+        if (typeof fieldValue != 'undefined') {
             self[fieldName].val(fieldValue);
-        }else{
+        } else {
             out = self[fieldName].val();
         }
 
         return out;
     }
 
-    this.getProductName = function(){
+    this.getProductName = function () {
         return workFieldVal('productName');
     };
-    
-    this.getCommand = function(){
+
+    this.getCommand = function () {
         return workFieldVal('command');
     };
 
-    this.getServer = function(){
+    this.getServer = function () {
         return workFieldVal('server');
     };
 
 
-    this.getDescription = function(){
+    this.getDescription = function () {
         return workFieldVal('description');
     };
 
-    this.workBuList = function(isChecked){
+    this.retrieveCheckedBuList = function () {
         var out = [];
-        var needToCheck = false;
-        var checkedValue = false;
-        if(typeof isChecked != 'undefined'){
-            checkedValue = isChecked;
-        }
-        $('input[id^=bu_]').each(function(){
+        $('input[id^=bu_]').each(function () {
             var $self = $(this);
-            if(!needToCheck){
-                if(isCheckboxChecked($self)){
-                    out.push($self.attr('value'));
-                }
-            }else{
-                if(needToCheck && checkedValue){
-                    $self.attr('checked', 'checked');
-                }
+            if (isCheckboxChecked($self)) {
+                out.push($self.attr('value'));
             }
         });
 
         return out;
     };
 
-    this.getObject = function(){
+    this.checkBuListCheckbox = function(checkTheBoxes, buList){
+        var selector = 'input[id^=bu_]';
+        if(typeof buList != 'undefined'){
+            //This is to be sure that only the bu given in the list are the one checked
+            this.checkBuListCheckbox(false);
+            var selectorList = [];
+            _.each(buList, function(element){
+                selectorList.push('#bu_' + element.toUpperCase());
+            });
+            selector = selectorList.join(',');
+        }
+        $(selector).each(function () {
+            var $self = $(this);
+            if(checkTheBoxes){
+                $self.attr('checked', true);
+            }else{
+                if(typeof $self.attr('checked') != 'undefined'){
+                    $self.attr('checked', false);
+                }
+            }
+       });
+    };
+
+    this.getObject = function () {
         self.pojso.isSeparator = self.isSeparator();
         self.pojso.productName = self.getProductName();
         self.pojso.command = self.getCommand();
         self.pojso.description = self.getDescription();
         self.pojso.server = self.getServer();
-        self.pojso.buList = self.workBuList();
+        self.pojso.buList = self.retrieveCheckedBuList();
         return self.pojso;
     };
 
-    this.highlightErrors = function(){
+    this.highlightErrors = function () {
         self.description.parent().parent().addClass('error');
     };
 
-    this.clean = function(){
+    this.clean = function () {
         workFieldVal('productName', '');
         workFieldVal('command', '');
         workFieldVal('server', '');
         workFieldVal('description', '');
-        self.workBuList(false);
+        self.checkBuListCheckbox(false);
         self.separator = initJqueryWrapper(self.separator, self.fieldIdList.separator);
         self.separator.removeAttr('checked');
+    };
+
+    this.initFormWithTask = function (taskDocument) {
+        workFieldVal('description', taskDocument.description);
+        self.separator = initJqueryWrapper(self.separator, self.fieldIdList.separator);
+        if(taskDocument.isSeparator){
+            self.separator.attr('checked', true);
+            this.toggleSeparatorMode();
+//            self.separator.trigger('click');
+        }else{
+            self.separator.attr('checked', false);
+            workFieldVal('productName', taskDocument.productName);
+            workFieldVal('command', taskDocument.command);
+            workFieldVal('server', taskDocument.server);
+            self.checkBuListCheckbox(true, taskDocument.buList);
+        }
+    };
+    this.toggleSeparatorMode = function(){
+        self.separator = initJqueryWrapper(self.separator, self.fieldIdList.separator);
+        var isChecked = ((typeof self.separator.attr('checked') != 'undefined') && (self.separator.attr('checked') == 'checked'));
+        var selectorList = ['#productName', '[id^=bu_]', '#command', '#server'];
+        _.forEach(selectorList, function (selector) {
+            if (isChecked) {
+                $(selector).attr('disabled', 'disabled');
+            } else {
+                $(selector).attr('disabled', null);
+            }
+        });
     };
 };

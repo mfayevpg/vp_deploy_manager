@@ -1,0 +1,79 @@
+<template name="taskForm">
+    <td colspan="8">
+        <form class="form-horizontal">
+            <legend>Task Form</legend>
+            <div class="control-group">
+                <label class="control-label">&nbsp;</label>
+
+                <div class="controls">
+                    <label class="checkbox"><input type="checkbox" id="separator"> Separator</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Product Name</label>
+
+                <div class="controls">
+                    <select class="input-small" id="productName">
+                        <option value="">Select</option>
+                        <option>Bong</option>
+                        <option>Ozone</option>
+                        <option>Oxy</option>
+                        <option>MobMid</option>
+                        <option>MemberMid</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">BU</label>
+
+                <div class="controls">
+                    <label class="checkbox inline"><input id="bu_BR" value="br" type="checkbox">BR</label>
+                    <label class="checkbox inline"><input id="bu_ES" value="es" type="checkbox">ES</label>
+                    <label class="checkbox inline"><input id="bu_FR" value="fr" type="checkbox">FR</label>
+                    <label class="checkbox inline"><input id="bu_IT" value="it" type="checkbox">IT</label>
+                    <label class="checkbox inline"><input id="bu_PL" value="pl" type="checkbox">PL</label>
+                    <label class="checkbox inline"><input id="bu_UK" value="uk" type="checkbox">UK</label>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Description</label>
+
+                <div class="controls">
+                    <textarea class="input-xlarge" id="description"></textarea>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Command</label>
+
+                <div class="controls">
+                    <input type="text" class="input-xxlarge" id="command">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Server</label>
+
+                <div class="controls">
+                    <select class="input-small" id="server">
+                        <option value="">Select</option>
+                        <option>vp-calculator01</option>
+                        <option>vp-calculator02</option>
+                        <option>vp-calculator03</option>
+                        <option>vp-calculator04</option>
+                        <option>vp-calculator05</option>
+                        <option>vp-calculator06</option>
+                    </select>
+                  {{#if isInsert}}
+                      <a href="#" class="btn" id="addTask">
+                          Ajouter
+                      </a>
+                  {{else}}
+                      <a href="#" class="btn" id="updateTask">
+                          Modifier
+                      </a> | <a href="#" class="toInsertMode">Passer en mode insertion</a>
+                  {{/if}}
+                </div>
+            </div>
+        </form>
+    </td>
+</template>

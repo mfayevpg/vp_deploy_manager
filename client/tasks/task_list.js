@@ -3,25 +3,6 @@
  * Date: 08/04/13
  * Time: 08:30
  */
-
-function exchangePosition(taskToExchangeWith, taskToMove, taskToExchangeWithPosition) {
-    console.log('Old position : ', taskToMove.position, 'New position : ', taskToExchangeWithPosition);
-    TaskList.update({_id: taskToExchangeWith._id}, {$set: {position: taskToMove.position}}, function (err) {
-        if (err) {
-            throw err;
-        }
-        TaskList.update({_id: taskToMove._id}, {$set: {position: taskToExchangeWithPosition}});
-    });
-}
-
-function removeFromWaitingRemovalConfirmation(taskId) {
-    var waitingForRemovalConfirmationList = Session.get('waitingForRemovalConfirmation');
-    waitingForRemovalConfirmationList = _.reject(waitingForRemovalConfirmationList, function (element) {
-        return (element._id == taskId);
-    });
-    Session.set('waitingForRemovalConfirmation', waitingForRemovalConfirmationList);
-}
-
 Template.taskListDisplay.helpers({
     taskList: function () {
         var taskListForDisplay = [];
@@ -76,19 +57,19 @@ Template.taskDetailDisplay.events({
         }
     },
 
+    /**
+     *
+     * Task removal management
+     *
+     */
     'click a.removeTask': function (event) {
         event.preventDefault();
-        var waitingForRemovalConfirmationList = Session.get('waitingForRemovalConfirmation');
-        if (!waitingForRemovalConfirmationList) {
-            waitingForRemovalConfirmationList = [];
-        }
-        waitingForRemovalConfirmationList.push(this);
-        Session.set('waitingForRemovalConfirmation', waitingForRemovalConfirmationList);
+        DeployHelper.addTaskToRemovalConfirmation(this);
     },
     'click a.removalCancellation': function (event) {
         event.preventDefault();
         var self = this;
-        removeFromWaitingRemovalConfirmation(self._id);
+        DeployHelper.removeFromWaitingRemovalConfirmation(self._id);
     },
     'click a.removalConfirmation': function (event) {
         event.preventDefault();
@@ -97,10 +78,28 @@ Template.taskDetailDisplay.events({
             if (err) {
                 throw err;
             }
-            removeFromWaitingRemovalConfirmation(self._id);
+            DeployHelper.removeFromWaitingRemovalConfirmation(self._id);
         });
+    },
+
+    /**
+     *
+     * Task update management
+     *
+     */
+    'click a.updateTask': function(event){
+        event.preventDefault();
+        DeployHelper.setTaskToUpdate(this);
     }
 });
+
+
+/**
+ *
+ * ROW display
+ *
+ */
+
 
 Template.taskDetailDisplay.helpers({
     canGoDown: function () {
@@ -121,54 +120,6 @@ Template.taskDetailDisplay.helpers({
         return ((DeployHelper.getTaskListUpdateState()) && (Handlebars._default_helpers.canUpdate()));
     },
     waitingForRemovalConfirmation: function () {
-        var self = this;
-        var waitingForRemovalConfirmationList = Session.get('waitingForRemovalConfirmation');
-        return _.find(waitingForRemovalConfirmationList, function (element) {
-            return self._id == element._id
-        })
-    }
-});
-
-Template.taskForm.rendered = function () {
-    $('#separator').click(function () {
-        var $self = $(this);
-        var isChecked = ((typeof $self.attr('checked') != 'undefined') && ($self.attr('checked') == 'checked'));
-        var selectorList = ['#productName', '[id^=bu_]', '#command', '#server'];
-        _.forEach(selectorList, function (selector) {
-            if (isChecked) {
-                $(selector).attr('disabled', 'disabled');
-            } else {
-                $(selector).attr('disabled', null);
-            }
-        });
-    });
-};
-
-Template.taskForm.events({
-    'click a#addTask': function (event) {
-        event.preventDefault();
-        var currentDeploy = DeployHelper.getCurrentDeploy();
-        if (currentDeploy != null) {
-            var taskForm = new TaskForm(currentDeploy);
-            if (taskForm.isValid()) {
-                var taskDocument = new TaskDocument();
-                taskDocument.fromForm(taskForm.getObject());
-                var maxOrder = TaskList.findOne({deployId: currentDeploy._id}, {sort: {position: -1}});
-                var newOrder = 1;
-                if (maxOrder) {
-                    newOrder = maxOrder.position + 1;
-                }
-                taskDocument.updateOrder(newOrder);
-                TaskList.insert(taskDocument.toDocument(), function (error, insertedId) {
-                    taskDocument._id = insertedId;
-                    if (error) {
-                        throw error;
-                    }
-                    taskForm.clean();
-                });
-            } else {
-                taskForm.highlightErrors();
-            }
-        }
+        return DeployHelper.isWaitingForRemovalConfirmation(this);
     }
 });

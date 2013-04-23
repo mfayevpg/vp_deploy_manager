@@ -35,6 +35,7 @@ function createEmpty(pageInvocation) {
 
 function setCurrentDeploy(pageInvocation) {
     DeployHelper.setCurrentDeploy(DeploymentList.findOne({_id: pageInvocation.params._id}));
+    DeployHelper.initializeSession();
 }
 
 Meteor.autorun(function () {
